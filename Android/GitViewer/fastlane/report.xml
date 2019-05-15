@@ -5,17 +5,52 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.001008">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000905">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: gradle" time="7.265011">
+      <testcase classname="fastlane.lanes" name="1: gradle" time="1.438385">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: fastlane install_plugins" time="1.569686">
+      <testcase classname="fastlane.lanes" name="2: fastlane install_plugins" time="1.607478">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: Switch to android build lane" time="0.001107">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: android_set_version_code" time="0.002126">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: gradle" time="16.402959">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: Switch to android upload_to_fabric lane" time="0.000806">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: crashlytics" time="3.152754">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="8: Switch to android send_slack_notification lane" time="0.000916">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="9: slack" time="0.36319">
         
       </testcase>
     

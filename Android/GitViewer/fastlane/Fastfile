@@ -15,7 +15,7 @@
 
 # Pre-run checks
 before_all do
-  raise '.env not correctly set, it\'s missing the Android keystore stuff' unless ENV['KEYSTORE_PASS'] && ENV['KEYSTORE_PATH'] && ENV['JSON_PATH']
+  raise '.env not correctly set, it\'s missing the Android keystore stuff' unless ENV['KEYSTORE_PASS'] && ENV['KEYSTORE_PATH']
   raise '.env not correctly set, it\'s missing Fabric credentials' unless ENV['FABRIC_TOKEN'] && ENV['FABRIC_BUILD_SECRET']
   raise '.env not correctly set, it\'s missing the Slack url' unless ENV['RELEASE_SLACK_URL']
 end
@@ -30,7 +30,7 @@ platform :android do
 
   private_lane :build do
     android_set_version_code(
-      gradle_file: gradle_file
+      gradle_file: './app/build.gradle'
     )
     gradle(
       task: 'assemble',
@@ -54,8 +54,8 @@ end
  # Upload release to Fabric
  private_lane :upload_to_fabric do
   crashlytics(
-  api_token: ENV['FABRIC_TOKEN'],
-  build_secret: ENV['FABRIC_BUILD_SECRET']
+    api_token: ENV['FABRIC_TOKEN'],
+    build_secret: ENV['FABRIC_BUILD_SECRET']
   )
 end
 
