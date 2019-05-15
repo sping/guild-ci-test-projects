@@ -13,26 +13,64 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
+# Pre-run checks
+before_all do
+  raise '.env not correctly set, it\'s missing the Android keystore stuff' unless ENV['KEYSTORE_PASS'] && ENV['KEYSTORE_PATH'] && ENV['JSON_PATH']
+  raise '.env not correctly set, it\'s missing Fabric credentials' unless ENV['FABRIC_TOKEN'] && ENV['FABRIC_BUILD_SECRET']
+  raise '.env not correctly set, it\'s missing the Slack url' unless ENV['RELEASE_SLACK_URL']
+end
+
 default_platform(:android)
 
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
+  before_all do
+    gradle( task: 'clean')
+    sh('fastlane install_plugins')
   end
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
+  private_lane :build do
+    android_set_version_code(
+      gradle_file: gradle_file
+    )
+    gradle(
+      task: 'assemble',
+      build_type: 'Release',
+      properties: {
+        'android.injected.signing.store.file' => ENV['KEYSTORE_PATH'],
+        'android.injected.signing.store.password' => ENV['KEYSTORE_PASS'],
+        'android.injected.signing.key.alias' => ENV['KEYSTORE_ALIAS'],
+        'android.injected.signing.key.password' => ENV['KEYSTORE_PASS']
+      }
+    )
   end
 
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
-  end
+    lane :beta do
+      build
+      upload_to_fabric
+      send_slack_notification(platform: 'Android', type: 'beta')
+    end
 end
+
+ # Upload release to Fabric
+ private_lane :upload_to_fabric do
+  crashlytics(
+  api_token: ENV['FABRIC_TOKEN'],
+  build_secret: ENV['FABRIC_BUILD_SECRET']
+  )
+end
+
+# Notify slack a new release is released
+private_lane :send_slack_notification do |args|
+  slack(
+    slack_url: ENV['RELEASE_SLACK_URL'],
+    channel: "#ci_cd_guild",
+    message: "#{args[:platform]} #{args[:type]} app released",
+    payload: {
+      'Build Date' => Time.new.to_s,
+      'Built by' => 'Fastlane'
+    }
+  )
+end
+
+
+
