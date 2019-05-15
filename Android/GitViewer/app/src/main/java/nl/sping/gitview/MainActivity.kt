@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        TokenWarehouse.clearTokens()
         setupActionBar()
         setupNavigation()
         setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -49,6 +50,4 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
            }
        }
     }
-
-
 }
