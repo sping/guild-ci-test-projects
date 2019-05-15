@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="GitViewer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GitLogo" translatesAutoresizingMaskIntoConstraints="NO" id="wvG-MS-blX">
+                                <rect key="frame" x="75" y="59.999999999999986" width="264" height="221.66666666666663"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="221.66999999999999" id="U0t-iY-myc"/>
+                                </constraints>
+                            </imageView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="sa6-3Y-7m1" customClass="UITextFieldWithPadding" customModule="GitViewer" customModuleProvider="target">
+                                <rect key="frame" x="20" y="490" width="374" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="bQX-ty-Gv7"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" textContentType="username"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PGv-3T-4D9" customClass="UITextFieldWithPadding" customModule="GitViewer" customModuleProvider="target">
+                                <rect key="frame" x="20" y="560" width="374" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="VJD-GJ-CLu"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="puD-ar-l0K">
+                                <rect key="frame" x="20" y="666" width="374" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="kru-VG-ek7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Login"/>
+                                <connections>
+                                    <action selector="login:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DIK-Ae-DUx"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login to your Github account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HrD-0t-3VC">
+                                <rect key="frame" x="20" y="461" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="Primary"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="wvG-MS-blX" secondAttribute="trailing" constant="75" id="1m3-V4-rgl"/>
+                            <constraint firstItem="PGv-3T-4D9" firstAttribute="top" secondItem="sa6-3Y-7m1" secondAttribute="bottom" constant="20" id="2JU-Tr-fsW"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="sa6-3Y-7m1" secondAttribute="trailing" constant="20" id="3bm-UW-M5s"/>
+                            <constraint firstItem="puD-ar-l0K" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="5yx-SU-a9s"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="PGv-3T-4D9" secondAttribute="trailing" constant="20" id="NUj-Pa-Fi8"/>
+                            <constraint firstItem="PGv-3T-4D9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="NvW-4l-FyQ"/>
+                            <constraint firstItem="sa6-3Y-7m1" firstAttribute="top" secondItem="HrD-0t-3VC" secondAttribute="bottom" constant="8" id="VlS-fa-7lD"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="puD-ar-l0K" secondAttribute="trailing" constant="20" id="XBq-xf-DVC"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="puD-ar-l0K" secondAttribute="bottom" constant="20" id="Zgq-u8-whC"/>
+                            <constraint firstItem="wvG-MS-blX" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="eVn-Zp-YgM"/>
+                            <constraint firstItem="sa6-3Y-7m1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="g22-ND-ngS"/>
+                            <constraint firstItem="wvG-MS-blX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="75" id="mba-6b-GeR"/>
+                            <constraint firstItem="HrD-0t-3VC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="ptS-dU-47c"/>
+                            <constraint firstItem="puD-ar-l0K" firstAttribute="top" secondItem="PGv-3T-4D9" secondAttribute="bottom" constant="56" id="sS8-vJ-Bgf"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HrD-0t-3VC" secondAttribute="trailing" constant="20" id="wR5-4j-uGn"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="loginButton" destination="puD-ar-l0K" id="kWg-ot-vQE"/>
+                        <outlet property="passwordTextField" destination="PGv-3T-4D9" id="lL7-5P-mJS"/>
+                        <outlet property="usernameTextField" destination="sa6-3Y-7m1" id="BL8-73-Gcd"/>
+                        <segue destination="xei-s9-CUJ" kind="presentation" identifier="showListViewController" modalPresentationStyle="fullScreen" id="SGG-xS-ahH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="47.826086956521742" y="24.456521739130437"/>
+        </scene>
+        <!--Repos List View Controller-->
+        <scene sceneID="T1c-9u-mj4">
+            <objects>
+                <viewController storyboardIdentifier="GithubRepoViewController" id="xei-s9-CUJ" customClass="ReposListViewController" customModule="GitViewer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cMS-1Q-pVf">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ovz-AI-zWh">
+                                <rect key="frame" x="20" y="84" width="374" height="562"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RepoCell" textLabel="ace-tT-dMu" detailTextLabel="dDw-Xl-o3J" rowHeight="83" style="IBUITableViewCellStyleSubtitle" id="y4y-oW-sl9">
+                                        <rect key="frame" x="0.0" y="28" width="374" height="83"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y4y-oW-sl9" id="38n-w5-lxE">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="82.666666666666671"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ace-tT-dMu">
+                                                    <rect key="frame" x="20.000000000000004" y="22" width="33.333333333333336" height="20.333333333333332"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dDw-Xl-o3J">
+                                                    <rect key="frame" x="19.999999999999996" y="45.333333333333329" width="43.666666666666664" height="14.333333333333334"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="xei-s9-CUJ" id="HhF-eS-mzC"/>
+                                    <outlet property="delegate" destination="xei-s9-CUJ" id="GpX-un-9mW"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Github repo's" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EUS-dF-RwA">
+                                <rect key="frame" x="148.66666666666666" y="40" width="116.66666666666666" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nU5-ni-YFZ">
+                                <rect key="frame" x="20" y="666" width="374" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="dbh-rW-icz"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Logout"/>
+                                <connections>
+                                    <action selector="logout:" destination="xei-s9-CUJ" eventType="touchUpInside" id="yrp-gn-v8Q"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" name="Primary"/>
+                        <constraints>
+                            <constraint firstItem="EUS-dF-RwA" firstAttribute="top" secondItem="hod-Mb-hi0" secondAttribute="top" constant="20" id="G13-R5-7EC"/>
+                            <constraint firstItem="nU5-ni-YFZ" firstAttribute="top" secondItem="Ovz-AI-zWh" secondAttribute="bottom" constant="20" id="IKg-UR-Iue"/>
+                            <constraint firstItem="hod-Mb-hi0" firstAttribute="trailing" secondItem="nU5-ni-YFZ" secondAttribute="trailing" constant="20" id="LqG-GF-S1D"/>
+                            <constraint firstItem="EUS-dF-RwA" firstAttribute="centerX" secondItem="hod-Mb-hi0" secondAttribute="centerX" id="ZiY-FF-OOO"/>
+                            <constraint firstItem="hod-Mb-hi0" firstAttribute="bottom" secondItem="nU5-ni-YFZ" secondAttribute="bottom" constant="20" id="aO6-np-icj"/>
+                            <constraint firstItem="nU5-ni-YFZ" firstAttribute="leading" secondItem="hod-Mb-hi0" secondAttribute="leading" constant="20" id="lTv-au-sCI"/>
+                            <constraint firstItem="Ovz-AI-zWh" firstAttribute="top" secondItem="EUS-dF-RwA" secondAttribute="bottom" constant="20" id="w6z-j1-nxh"/>
+                            <constraint firstItem="Ovz-AI-zWh" firstAttribute="leading" secondItem="hod-Mb-hi0" secondAttribute="leading" constant="20" id="x1H-1F-7XY"/>
+                            <constraint firstItem="hod-Mb-hi0" firstAttribute="trailing" secondItem="Ovz-AI-zWh" secondAttribute="trailing" constant="20" id="zkS-mS-AGo"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="hod-Mb-hi0"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="Ovz-AI-zWh" id="7Th-uO-K5L"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="H07-cl-oxb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="982.60869565217399" y="23.64130434782609"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="GitLogo" width="266.66665649414062" height="221.66667175292969"/>
+        <namedColor name="Primary">
+            <color red="0.97000002861022949" green="0.80000001192092896" blue="0.27000001072883606" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

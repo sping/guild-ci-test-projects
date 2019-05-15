@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/app_navigation"
+            app:startDestination="@id/loginFragment">
+
+    <fragment android:id="@+id/loginFragment" android:name="nl.sping.gitview.login.LoginFragment"
+              android:label="fragment_login" tools:layout="@layout/fragment_login"/>
+    <fragment android:id="@+id/repoListFragment" android:name="nl.sping.gitview.repos.RepoListFragment"
+              android:label="fragment_repo_list" tools:layout="@layout/fragment_repo_list"/>
+    <action android:id="@+id/action_global_loginFragment" app:destination="@id/loginFragment"/>
+    <action android:id="@+id/action_global_repoListFragment" app:destination="@id/repoListFragment"
+            app:popUpTo="@+id/loginFragment" app:popUpToInclusive="true" app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+</navigation>

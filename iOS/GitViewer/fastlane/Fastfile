@@ -1,0 +1,85 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+# pre-run checks
+before_all do
+  raise '.env not correctly set, it\'s missing the Apple credentials' unless ENV['APPLE_ACCOUNT'] && ENV['APPLE_TEAM_ID'] && ENV['APPLE_ID']
+  raise '.env not correctly set, it\'s missing Fabric credentials' unless ENV['FABRIC_TOKEN'] && ENV['FABRIC_BUILD_SECRET']
+  raise '.env not correctly set, it\'s missing the Slack url' unless ENV['RELEASE_SLACK_URL']
+end
+
+platform :ios do
+  before_all do
+    clear_derived_data
+    cocoapods(
+      clean: true,
+      podfile: "./Podfile"
+    )
+  end
+
+  private_lane :build_beta do
+    gym(
+      scheme: 'GitViewer',
+      export_method: 'enterprise',
+      workspace: './GitViewer.xcworkspace'
+    )
+  end
+
+  private_lane :buid_release do
+    gym(
+      scheme: 'GitViewer',
+      workspace: './GitViewer.xcworkspace'
+    )
+  end
+
+  desc 'Build the iOS application and push it to Fabric'
+  lane :beta do
+    increment_build_number(xcodeproj: './GitViewer.xcodeproj')
+    get_certificates(
+      output_path: './fastlane/certificates'
+    )
+
+    get_provisioning_profile(
+      output_path: './fastlane/certificates'
+    )
+
+    build_beta
+    upload_to_fabric
+    send_slack_notification(platform: 'iOS', type: 'beta')
+  end
+
+  # Upload beta to Fabric
+  private_lane :upload_to_fabric do
+    crashlytics(
+    api_token: ENV['FABRIC_TOKEN'],
+    build_secret: ENV['FABRIC_BUILD_SECRET']
+    )
+  end
+
+  # Send a slack notification that the build is uploaded
+  private_lane :send_slack_notification do |args|
+    slack(
+      slack_url: ENV['RELEASE_SLACK_URL'],
+      channel: "#ci_cd_guild",
+      message: "#{args[:platform]} #{args[:type]} app released to Fabric",
+      payload: {
+        'Build Date' => Time.new.to_s,
+        'Built by' => 'Fastlane'
+      }
+    )
+  end
+end
