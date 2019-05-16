@@ -8,7 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
-import nl.sping.gitview.persistence.TokenWarehouse
+import nl.sping.gitview.data.TokenWarehouse
 
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 

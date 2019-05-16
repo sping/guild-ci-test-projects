@@ -4,9 +4,9 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/app_navigation"
             app:startDestination="@id/loginFragment">
 
-    <fragment android:id="@+id/loginFragment" android:name="nl.sping.gitview.login.LoginFragment"
+    <fragment android:id="@+id/loginFragment" android:name="nl.sping.gitview.screens.LoginFragment"
               android:label="fragment_login" tools:layout="@layout/fragment_login"/>
-    <fragment android:id="@+id/repoListFragment" android:name="nl.sping.gitview.repos.RepoListFragment"
+    <fragment android:id="@+id/repoListFragment" android:name="nl.sping.gitview.screens.RepoListFragment"
               android:label="fragment_repo_list" tools:layout="@layout/fragment_repo_list"/>
     <action android:id="@+id/action_global_loginFragment" app:destination="@id/loginFragment"/>
     <action android:id="@+id/action_global_repoListFragment" app:destination="@id/repoListFragment"
