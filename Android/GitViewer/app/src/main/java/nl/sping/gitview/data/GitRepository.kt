@@ -3,6 +3,7 @@ package nl.sping.gitview.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ class GitRepository(private val api: GithubApi) {
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         Log.d("LoginFragment", "Done")
+                        val obj = response.body() ?: JsonObject()
 
                     } else {
                         Log.d("LoginFragment", "Error")

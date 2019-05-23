@@ -28,7 +28,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         btn_login.setOnClickListener {
             loginViewModel.login(input_email.editText?.text.toString(), input_password.editText?.text.toString())
                 ?.observe(this, Observer {
