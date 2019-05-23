@@ -1,4 +1,4 @@
-package nl.sping.gitview.model
+package nl.sping.gitview.data
 
 import com.google.gson.annotations.SerializedName
 
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
  * Created by sebastiaan on 2019-05-15
  */
 
-data class GithubRepo(
+data class Git(
     @SerializedName("name")
     val name: String,
     @SerializedName("url")

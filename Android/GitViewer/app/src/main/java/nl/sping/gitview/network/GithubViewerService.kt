@@ -2,7 +2,7 @@ package nl.sping.gitview.network
 
 import android.content.Context
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import nl.sping.gitview.persistence.TokenWarehouse
+import nl.sping.gitview.data.TokenWarehouse
 import nl.sping.gitview.utils.Utils
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

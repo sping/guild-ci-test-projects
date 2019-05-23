@@ -1,4 +1,4 @@
-package nl.sping.gitview.persistence
+package nl.sping.gitview.data
 
 import android.content.Context
 import android.content.SharedPreferences
