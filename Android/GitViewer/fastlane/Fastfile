@@ -15,7 +15,7 @@
 
 # Pre-run checks
 before_all do
-  raise '.env not correctly set, it\'s missing the Android keystore stuff' unless ENV['KEYSTORE_PASS'] && ENV['KEYSTORE_PATH']
+  raise '.env not correctly set, it\'s missing the Android keystore stuff' unless ENV['KEYSTORE_PASS'] && ENV['KEYSTORE_ALIAS']
   raise '.env not correctly set, it\'s missing Fabric credentials' unless ENV['FABRIC_TOKEN'] && ENV['FABRIC_BUILD_SECRET']
   raise '.env not correctly set, it\'s missing the Slack url' unless ENV['RELEASE_SLACK_URL']
 end
@@ -36,7 +36,7 @@ platform :android do
       task: 'assemble',
       build_type: 'Release',
       properties: {
-        'android.injected.signing.store.file' => ENV['KEYSTORE_PATH'],
+        'android.injected.signing.store.file' => './GitViewer.jks',
         'android.injected.signing.store.password' => ENV['KEYSTORE_PASS'],
         'android.injected.signing.key.alias' => ENV['KEYSTORE_ALIAS'],
         'android.injected.signing.key.password' => ENV['KEYSTORE_PASS']
@@ -44,11 +44,28 @@ platform :android do
     )
   end
 
-    lane :beta do
+    # Execute Staging beta deployment
+    lane :deploy_staging do
       build
       upload_to_fabric
-      send_slack_notification(platform: 'Android', type: 'beta')
+      send_slack_notification(platform: 'Android', type: 'beta', environment: 'Staging')
     end
+
+    # Execute Production beta deployment
+    lane :deploy_production do
+      build
+      upload_to_fabric
+      send_slack_notification(platform: 'Android', type: 'beta', environment: 'Production')
+    end
+
+    # Execute Google Play Store deployment
+    lane :deploy_play_store do
+      build
+      upload_to_play_store # Uploads the APK built in the gradle step above and releases it to all production users
+      send_slack_notification(platform: 'Android', type: 'release', environment: 'Production')
+    end
+
+
 end
 
  # Upload release to Fabric
@@ -64,7 +81,7 @@ private_lane :send_slack_notification do |args|
   slack(
     slack_url: ENV['RELEASE_SLACK_URL'],
     channel: "#ci_cd_guild",
-    message: "#{args[:platform]} #{args[:type]} app released",
+    message: "#{args[:platform]} #{args[:type]} app released with #{args[:environment]} environment",
     payload: {
       'Build Date' => Time.new.to_s,
       'Built by' => 'Fastlane'
