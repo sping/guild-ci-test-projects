@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - save_cache:
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
           paths:
             - ~/guild-ci-test-projects
 
@@ -23,16 +23,16 @@ jobs:
     working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer/
     steps:
       - restore_cache:
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
           keys:
-            - v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
-            - v1-bundle-<< parameters.platform >>
+            - '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}'
+            - '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>'
       - run: gem update --system
       - run: gem install bundle
       - run: bundle install --path vendor/bundle
       - save_cache:
-          key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}'
           paths:
             - vendor/bundle
 
@@ -50,11 +50,11 @@ jobs:
     working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer/
     steps:
       - restore_cache:
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
           keys:
-            - v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
-            - v1-bundle-<< parameters.platform >>
+            - '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}'
+            - '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>'
       - run: gem update --system
       - run: gem install bundle
       - run:
