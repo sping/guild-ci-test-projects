@@ -36,7 +36,7 @@ jobs:
           paths:
             - vendor/bundle
 
-  bundle_ios_dependencies:
+  bundle_pods:
     docker:
       - image: circleci/ruby:2.6.3-node
     working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer/
