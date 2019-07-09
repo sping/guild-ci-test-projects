@@ -26,6 +26,8 @@ jobs:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
+      - run: gem update --system
+      - run: gem bundle
       - run: bundle install --path vendor/bundle
       - save_cache:
           key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
