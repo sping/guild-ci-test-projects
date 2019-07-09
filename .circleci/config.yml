@@ -57,6 +57,7 @@ jobs:
             - '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>'
       - run: gem update --system
       - run: gem install bundle
+      - run: bundle install --path vendor/bundle
       - run:
           command: bundle exec fastlane << parameters.command >>
 
