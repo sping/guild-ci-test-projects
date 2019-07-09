@@ -22,12 +22,12 @@ jobs:
       - image: circleci/ruby:2.6.3-node
     working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer
     steps:
-      - run: gem update --system
-      - run: gem install bundle
       - restore_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
+      - run: gem update --system
+      - run: gem install bundle
       - run: bundle install --path vendor/bundle
       - save_cache:
           key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
@@ -47,12 +47,12 @@ jobs:
       - image: circleci/ruby:2.6.3-node
     working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer
     steps:
-      - run: gem update --system
-      - run: gem install bundle
       - restore_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
+      - run: gem update --system
+      - run: gem install bundle
       - run:
           command: bundle exec fastlane << parameters.command >>
 
