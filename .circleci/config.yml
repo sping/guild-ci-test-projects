@@ -63,10 +63,12 @@ jobs:
 workflows:
   build:
     jobs:
-      - checkout_code
+      - checkout_code:
+          context: guild-ci-test-projects-fastlane
       - bundle_dependencies:
           name: bundle_ios_dependencies
           platform: iOS
+          context: guild-ci-test-projects-fastlane
           requires:
             - checkout_code
       - fastlane:
