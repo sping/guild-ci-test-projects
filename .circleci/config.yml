@@ -26,13 +26,14 @@ jobs:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
+      - run: ls vendor/bundle/ruby/2.6.0/gems
       - run: gem update --system
       - run: gem install bundle
       - run: bundle install --path vendor/bundle
       - save_cache:
           key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
           paths:
-            - ~/guild-ci-test-projects/<< parameters.platform >>/vendor/bundle
+            - vendor/bundle
 
   fastlane:
     parameters:
