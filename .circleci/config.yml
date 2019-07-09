@@ -44,17 +44,17 @@ jobs:
       - restore_cache:
           key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}'
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-iOS-{{ checksum "Gemfile.lock" }}'
       - restore_cache:
           keys:
-            - '{{ .Environment.CACHE_VERSION }}-pods-<< parameters.platform >>-{{ checksum "Podfile.lock" }}'
-            - '{{ .Environment.CACHE_VERSION }}-pods-<< parameters.platform >>'
+            - '{{ .Environment.CACHE_VERSION }}-pods-iOS-{{ checksum "Podfile.lock" }}'
+            - '{{ .Environment.CACHE_VERSION }}-pods-iOS'
       - run: gem update --system
       - run: gem install bundle
       - run: bundle install --path vendor/bundle
       - run: bundle exec pod install
       - save_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-pods-<< parameters.platform >>-{{ checksum "Podfile.lock" }}'
+          key: '{{ .Environment.CACHE_VERSION }}-pods-iOS-{{ checksum "Podfile.lock" }}'
           paths:
             - Pods
 
