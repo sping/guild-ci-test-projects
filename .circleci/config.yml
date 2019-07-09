@@ -20,7 +20,7 @@ jobs:
         enum: ["iOS", "Android"]
     docker:
       - image: circleci/ruby:2.6.3-node
-    working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer
+    working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer/
     steps:
       - restore_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
@@ -47,7 +47,7 @@ jobs:
         type: string
     docker:
       - image: circleci/ruby:2.6.3-node
-    working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer
+    working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer/
     steps:
       - restore_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
