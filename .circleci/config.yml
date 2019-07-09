@@ -57,6 +57,7 @@ jobs:
           key: '{{ .Environment.CACHE_VERSION }}-pods-iOS-{{ checksum "Podfile.lock" }}'
           paths:
             - Pods
+            - ~/.cocoapods
 
   fastlane:
     parameters:
