@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   checkout_code:
     docker:
-      - image: circleci/ruby:2.4-node
+      - image: circleci/ruby:2.6.3-node
     working_directory: ~/guild-ci-test-projects
     steps:
       - checkout
@@ -19,7 +19,7 @@ jobs:
         type: enum
         enum: ["iOS", "Android"]
     docker:
-      - image: circleci/ruby:2.4-node
+      - image: circleci/ruby:2.6.3-node
     working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer
     steps:
       - restore_cache:
@@ -42,7 +42,7 @@ jobs:
         description: "Fastlane command to run"
         type: string
     docker:
-      - image: circleci/ruby:2.4-node
+      - image: circleci/ruby:2.6.3-node
     working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer
     steps:
       - restore_cache:
