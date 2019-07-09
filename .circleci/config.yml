@@ -25,10 +25,10 @@ jobs:
       - restore_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
-          key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
+          key: v1-bundle-{{ parameters.platform }}-{{ checksum "Gemfile.lock" }}
       - run: bundle install --path vendor/bundle
       - save_cache:
-          key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
+          key: v1-bundle-{{ parameters.platform }}-{{ checksum "Gemfile.lock" }}
           paths:
             - ~/guild-ci-test-projects/<< parameters.platform >>/vendor/bundle
 
@@ -48,7 +48,7 @@ jobs:
       - restore_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
-          key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
+          key: v1-bundle-{{ parameters.platform }}-{{ checksum "Gemfile.lock" }}
       - run:
           command: bundle exec fastlane << parameters.command >>
 
