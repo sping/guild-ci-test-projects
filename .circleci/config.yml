@@ -25,8 +25,9 @@ jobs:
       - restore_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
-          key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
-      - run: ls vendor/bundle/ruby/2.6.0/gems
+          keys:
+            - v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
+            - v1-bundle-<< parameters.platform >>
       - run: gem update --system
       - run: gem install bundle
       - run: bundle install --path vendor/bundle
@@ -51,7 +52,9 @@ jobs:
       - restore_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
-          key: v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
+          keys:
+            - v1-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}
+            - v1-bundle-<< parameters.platform >>
       - run: gem update --system
       - run: gem install bundle
       - run:
