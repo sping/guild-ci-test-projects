@@ -36,6 +36,28 @@ jobs:
           paths:
             - vendor/bundle
 
+  bundle_ios_dependencies:
+    docker:
+      - image: circleci/ruby:2.6.3-node
+    working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer/
+    steps:
+      - restore_cache:
+          key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
+      - restore_cache:
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}'
+      - restore_cache:
+          keys:
+            - '{{ .Environment.CACHE_VERSION }}-pods-<< parameters.platform >>-{{ checksum "Podfile.lock" }}'
+            - '{{ .Environment.CACHE_VERSION }}-pods-<< parameters.platform >>'
+      - run: gem update --system
+      - run: gem install bundle
+      - run: bundle install --path vendor/bundle
+      - run: bundle exec pod install
+      - save_cache:
+          key: '{{ .Environment.CACHE_VERSION }}-pods-<< parameters.platform >>-{{ checksum "Podfile.lock" }}'
+          paths:
+            - Pods
+
   fastlane:
     parameters:
       platform:
@@ -52,9 +74,9 @@ jobs:
       - restore_cache:
           key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
-          keys:
-            - '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}'
-            - '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>'
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}'
+      - restore_cache:
+          key: '{{ .Environment.CACHE_VERSION }}-pods-<< parameters.platform >>-{{ checksum "Podfile.lock" }}'
       - run: gem update --system
       - run: gem install bundle
       - run: bundle install --path vendor/bundle
@@ -72,13 +94,17 @@ workflows:
           context: guild-ci-test-projects-fastlane
           requires:
             - checkout_code
+      - bundle_pods:
+          context: guild-ci-test-projects-fastlane
+          requires:
+            - bundle_ios_dependencies
       - fastlane:
           name: lint-ios
           platform: iOS
           command: lint
           context: guild-ci-test-projects-fastlane
           requires:
-            - bundle_ios_dependencies
+            - bundle_pods
       - fastlane:
           name: build-and-deploy-ios-staging
           platform: iOS
