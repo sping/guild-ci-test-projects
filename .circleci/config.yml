@@ -61,9 +61,6 @@ workflows:
           platform: iOS
           requires:
             - checkout_code
-          filters:
-            branches:
-              only: /iOS/.*$/
       - fastlane:
           name: lint-ios
           platform: iOS
@@ -71,9 +68,6 @@ workflows:
           context: guild-ci-test-projects-fastlane
           requires:
             - bundle_ios_dependencies
-          filters:
-            branches:
-              only: /iOS/.*$/
       - fastlane:
           name: build-and-deploy-ios-staging
           platform: iOS
