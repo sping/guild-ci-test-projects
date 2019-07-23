@@ -154,7 +154,7 @@ workflows:
           platform: Android
           context: guild-ci-test-projects-fastlane
           requires:
-            - bundle_android_dependencies
+            - checkout_code
       - fastlane_android:
           name: build-and-deploy-android-staging
           command: deploy_staging
