@@ -1,5 +1,26 @@
 version: 2.1
 
+executors:
+  ios:
+    docker:
+      - image: circleci/ruby:2.6.3-node
+    working_directory: ~/guild-ci-test-projects/iOS/GitViewer/
+  android:
+    docker:
+      - image: iisue/alpine-android-fastlane
+    environment:
+      ANDROID_COMPILE_SDK: "28"
+      ANDROID_BUILD_TOOLS: "28.0.3"
+      ANDROID_SDK_TOOLS: "4333796"
+    working_directory: ~/guild-ci-test-projects/Android/GitViewer/
+
+commands:
+  setup_gems:
+    steps:
+      - run: gem update --system
+      - run: gem install bundle
+      - run: bundle install --path vendor/bundle
+
 jobs:
   checkout_code:
     docker:
@@ -12,47 +33,25 @@ jobs:
           paths:
             - ~/guild-ci-test-projects
 
-  bundle_dependencies:
-    parameters:
-      platform:
-        description: "iOS or Android"
-        type: enum
-        enum: ["iOS", "Android"]
-    docker:
-      - image: circleci/ruby:2.6.3-node
-    working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer/
+  bundle_ios_dependencies:
+    executor: ios
     steps:
       - restore_cache:
           key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
           keys:
-            - '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}'
-            - '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>'
-      - run: gem update --system
-      - run: gem install bundle
-      - run: bundle install --path vendor/bundle
-      - save_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}'
-          paths:
-            - vendor/bundle
-
-  bundle_pods:
-    docker:
-      - image: circleci/ruby:2.6.3-node
-    working_directory: ~/guild-ci-test-projects/iOS/GitViewer/
-    steps:
-      - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
-      - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-bundle-iOS-{{ checksum "Gemfile.lock" }}'
+            - '{{ .Environment.CACHE_VERSION }}-bundle-iOS-{{ checksum "Gemfile.lock" }}'
+            - '{{ .Environment.CACHE_VERSION }}-bundle-iOS'
       - restore_cache:
           keys:
             - '{{ .Environment.CACHE_VERSION }}-pods-iOS-{{ checksum "Podfile.lock" }}'
             - '{{ .Environment.CACHE_VERSION }}-pods-iOS'
-      - run: gem update --system
-      - run: gem install bundle
-      - run: bundle install --path vendor/bundle
+      - setup_gems
       - run: bundle exec pod install
+      - save_cache:
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-iOS-{{ checksum "Gemfile.lock" }}'
+          paths:
+            - vendor/bundle
       - save_cache:
           key: '{{ .Environment.CACHE_VERSION }}-pods-iOS-{{ checksum "Podfile.lock" }}'
           paths:
@@ -64,9 +63,7 @@ jobs:
       command:
         description: "Fastlane command to run"
         type: string
-    docker:
-      - image: circleci/ruby:2.6.3-node
-    working_directory: ~/guild-ci-test-projects/iOS/GitViewer/
+    executor: ios
     steps:
       - restore_cache:
           key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
@@ -74,28 +71,37 @@ jobs:
           key: '{{ .Environment.CACHE_VERSION }}-bundle-iOS-{{ checksum "Gemfile.lock" }}'
       - restore_cache:
           key: '{{ .Environment.CACHE_VERSION }}-pods-iOS-{{ checksum "Podfile.lock" }}'
-      - run: gem update --system
-      - run: gem install bundle
-      - run: bundle install --path vendor/bundle
+      - setup_gems
       - run:
           command: bundle exec fastlane << parameters.command >>
+
+  bundle_android_dependencies:
+    executor: android
+    steps:
+      - restore_cache:
+          key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
+      - restore_cache:
+          keys:
+            - '{{ .Environment.CACHE_VERSION }}-bundle-Android-{{ checksum "Gemfile.lock" }}'
+            - '{{ .Environment.CACHE_VERSION }}-bundle-Android'
+      - setup_gems
+      - save_cache:
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-Android-{{ checksum "Gemfile.lock" }}'
+          paths:
+            - vendor/bundle
 
   fastlane_android:
     parameters:
       command:
         description: "Fastlane command to run"
         type: string
-    docker:
-      - image: circleci/ruby:2.6.3-node
-    working_directory: ~/guild-ci-test-projects/Android/GitViewer/
+    executor: android
     steps:
       - restore_cache:
           key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
           key: '{{ .Environment.CACHE_VERSION }}-bundle-Android-{{ checksum "Gemfile.lock" }}'
-      - run: gem update --system
-      - run: gem install bundle
-      - run: bundle install --path vendor/bundle
+      - setup_gems
       - run:
           command: bundle exec fastlane << parameters.command >>
 
@@ -105,49 +111,44 @@ workflows:
       - checkout_code:
           context: guild-ci-test-projects-fastlane
       # iOS
-      - bundle_dependencies:
-          name: bundle_ios_dependencies
+      - bundle_ios_dependencies:
           platform: iOS
           context: guild-ci-test-projects-fastlane
           requires:
             - checkout_code
-      - bundle_pods:
+      - fastlane_ios:
+          name: lint_ios
+          command: lint
           context: guild-ci-test-projects-fastlane
           requires:
             - bundle_ios_dependencies
       - fastlane_ios:
-          name: lint-ios
-          command: lint
-          context: guild-ci-test-projects-fastlane
-          requires:
-            - bundle_pods
-      - fastlane_ios:
-          name: build-and-deploy-ios-staging
+          name: build_and_deploy_ios_staging
           command: deploy_staging
           context: guild-ci-test-projects-fastlane
           requires:
-            - lint-ios
+            - lint_ios
           filters:
             tags:
-              only: /Fabric/Staging/.*$/
+              only: /^Fabric/Staging/.*$/
       - fastlane_ios:
-          name: build-and-deploy-ios-production
+          name: build_and_deploy_ios_production
           command: deploy_production
           context: guild-ci-test-projects-fastlane
           requires:
-            - lint-ios
+            - lint_ios
           filters:
             tags:
-              only: /Fabric/Production/.*$/
+              only: /^Fabric/Production/.*$/
       - fastlane_ios:
-          name: build-and-deploy-ios-release
+          name: build_and_deploy_ios_release
           command: deploy_app_store
           context: guild-ci-test-projects-fastlane
           requires:
-            - lint-ios
+            - lint_ios
           filters:
             tags:
-              only: /Appstore/.*$/
+              only: /^Appstore/.*$/
       # Android
       - bundle_dependencies:
           name: bundle_android_dependencies
@@ -156,29 +157,29 @@ workflows:
           requires:
             - checkout_code
       - fastlane_android:
-          name: build-and-deploy-android-staging
+          name: build_and_deploy_android_staging
           command: deploy_staging
           context: guild-ci-test-projects-fastlane
           requires:
             - bundle_android_dependencies
           filters:
             tags:
-              only: /Fabric/Staging/.*$/
+              only: /^Fabric/Staging/.*$/
       - fastlane_android:
-          name: build-and-deploy-android-production
+          name: build_and_deploy_android_production
           command: deploy_production
           context: guild-ci-test-projects-fastlane
           requires:
             - bundle_android_dependencies
           filters:
             tags:
-              only: /Fabric/Production/.*$/
+              only: /^Fabric/Production/.*$/
       - fastlane_android:
-          name: build-and-deploy-android-release
+          name: build_and_deploy_android_release
           command: deploy_play_store
           context: guild-ci-test-projects-fastlane
           requires:
             - bundle_android_dependencies
           filters:
             tags:
-              only: /GooglePlayStore/.*$/
+              only: /^GooglePlayStore/.*$/
