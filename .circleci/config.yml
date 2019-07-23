@@ -18,7 +18,7 @@ commands:
   setup_gems:
     steps:
       - run: gem update --system
-      - run: gem install bundle
+      - run: gem install bundler --force
       - run: bundle install --path vendor/bundle
 
 jobs:
