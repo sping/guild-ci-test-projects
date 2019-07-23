@@ -154,19 +154,13 @@ workflows:
           platform: Android
           context: guild-ci-test-projects-fastlane
           requires:
-            - checkout_code
-      - fastlane_android:
-          name: lint-android
-          command: lint
-          context: guild-ci-test-projects-fastlane
-          requires:
             - bundle_android_dependencies
       - fastlane_android:
           name: build-and-deploy-android-staging
           command: deploy_staging
           context: guild-ci-test-projects-fastlane
           requires:
-            - lint-android
+            - bundle_android_dependencies
           filters:
             branches:
               only: /Fabric/Staging/.*$/
@@ -175,7 +169,7 @@ workflows:
           command: deploy_production
           context: guild-ci-test-projects-fastlane
           requires:
-            - lint-android
+            - bundle_android_dependencies
           filters:
             branches:
               only: /Fabric/Production/.*$/
@@ -184,7 +178,7 @@ workflows:
           command: deploy_play_store
           context: guild-ci-test-projects-fastlane
           requires:
-            - lint-android
+            - bundle_android_dependencies
           filters:
             branches:
               only: /GooglePlayStore/.*$/
