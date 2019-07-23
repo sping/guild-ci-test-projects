@@ -150,7 +150,7 @@ workflows:
           command: lint
           context: guild-ci-test-projects-fastlane
           requires:
-            - bundle_pods
+            - bundle_android_dependencies
       - fastlane:
           name: build-and-deploy-android-staging
           platform: Android
