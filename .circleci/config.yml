@@ -17,7 +17,6 @@ executors:
 commands:
   setup_gems_ios:
     steps:
-      - run: gem install bundler --force
       - run: bundle install --path vendor/bundle
   setup_gems_android:
     steps:
