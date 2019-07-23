@@ -2,8 +2,8 @@ version: 2.1
 
 executors:
   ios:
-    docker:
-      - image: circleci/ruby:2.6.3-node
+    macos:
+      xcode: "10.2.1"
     working_directory: ~/guild-ci-test-projects/iOS/GitViewer/
   android:
     docker:
