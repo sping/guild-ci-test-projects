@@ -42,23 +42,23 @@ jobs:
     executor: ios
     steps:
       - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
+          key: '{{ .Environment.CACHE_VERSION }}-repo-ios-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
           keys:
-            - '{{ .Environment.CACHE_VERSION }}-bundle-iOS-{{ checksum "Gemfile.lock" }}'
-            - '{{ .Environment.CACHE_VERSION }}-bundle-iOS'
+            - '{{ .Environment.CACHE_VERSION }}-bundle-ios-{{ checksum "Gemfile.lock" }}'
+            - '{{ .Environment.CACHE_VERSION }}-bundle-ios'
       - restore_cache:
           keys:
-            - '{{ .Environment.CACHE_VERSION }}-pods-iOS-{{ checksum "Podfile.lock" }}'
-            - '{{ .Environment.CACHE_VERSION }}-pods-iOS'
+            - '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
+            - '{{ .Environment.CACHE_VERSION }}-pods-ios'
       - setup_gems
       - run: bundle exec pod install
       - save_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-bundle-iOS-{{ checksum "Gemfile.lock" }}'
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-ios-{{ checksum "Gemfile.lock" }}'
           paths:
             - vendor/bundle
       - save_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-pods-iOS-{{ checksum "Podfile.lock" }}'
+          key: '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
           paths:
             - Pods
             - ~/.cocoapods
@@ -71,11 +71,11 @@ jobs:
     executor: ios
     steps:
       - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
+          key: '{{ .Environment.CACHE_VERSION }}-repo-ios-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-bundle-iOS-{{ checksum "Gemfile.lock" }}'
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-ios-{{ checksum "Gemfile.lock" }}'
       - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-pods-iOS-{{ checksum "Podfile.lock" }}'
+          key: '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
       - setup_gems
       - run:
           command: bundle exec fastlane << parameters.command >>
@@ -86,14 +86,14 @@ jobs:
     executor: android
     steps:
       - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
+          key: '{{ .Environment.CACHE_VERSION }}-repo-android-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
           keys:
-            - '{{ .Environment.CACHE_VERSION }}-bundle-Android-{{ checksum "Gemfile.lock" }}'
-            - '{{ .Environment.CACHE_VERSION }}-bundle-Android'
+            - '{{ .Environment.CACHE_VERSION }}-bundle-android-{{ checksum "Gemfile.lock" }}'
+            - '{{ .Environment.CACHE_VERSION }}-bundle-android'
       - setup_gems
       - save_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-bundle-Android-{{ checksum "Gemfile.lock" }}'
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-android-{{ checksum "Gemfile.lock" }}'
           paths:
             - vendor/bundle
 
@@ -105,9 +105,9 @@ jobs:
     executor: android
     steps:
       - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
+          key: '{{ .Environment.CACHE_VERSION }}-repo-android-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-bundle-Android-{{ checksum "Gemfile.lock" }}'
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-android-{{ checksum "Gemfile.lock" }}'
       - setup_gems
       - run:
           command: bundle exec fastlane << parameters.command >>
