@@ -57,7 +57,11 @@ jobs:
             - '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
             - '{{ .Environment.CACHE_VERSION }}-pods-ios'
       - setup_gems_ios
-      - run: bundle exec pod install
+      - run:
+          name: Install CocoaPods
+          command: |
+            curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+            bundle exec pod install
       - save_cache:
           key: '{{ .Environment.CACHE_VERSION }}-bundle-ios-{{ checksum "Gemfile.lock" }}'
           paths:
@@ -125,16 +129,25 @@ workflows:
           name: checkout_code_ios
           platform: ios
           context: guild-ci-test-projects-fastlane
+          filters:
+            tags:
+              only: /.*/
       - bundle_ios_dependencies:
           context: guild-ci-test-projects-fastlane
           requires:
             - checkout_code_ios
+          filters:
+            tags:
+              only: /.*/
       - fastlane_ios:
           name: lint_ios
           command: lint
           context: guild-ci-test-projects-fastlane
           requires:
             - bundle_ios_dependencies
+          filters:
+            tags:
+              only: /.*/
       - fastlane_ios:
           name: build_and_deploy_ios_staging
           command: deploy_staging
@@ -173,10 +186,16 @@ workflows:
           name: checkout_code_android
           platform: android
           context: guild-ci-test-projects-fastlane
+          filters:
+            tags:
+              only: /.*/
       - bundle_android_dependencies:
           context: guild-ci-test-projects-fastlane
           requires:
             - checkout_code_android
+          filters:
+            tags:
+              only: /.*/
       - fastlane_android:
           name: build_and_deploy_android_staging
           command: deploy_staging
