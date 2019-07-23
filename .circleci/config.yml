@@ -89,6 +89,7 @@ workflows:
     jobs:
       - checkout_code:
           context: guild-ci-test-projects-fastlane
+      # iOS
       - bundle_dependencies:
           name: bundle_ios_dependencies
           platform: iOS
@@ -136,3 +137,47 @@ workflows:
           filters:
             branches:
               only: /Appstore/.*$/
+      # Android
+      - bundle_dependencies:
+          name: bundle_android_dependencies
+          platform: Android
+          context: guild-ci-test-projects-fastlane
+          requires:
+            - checkout_code
+      - fastlane:
+          name: lint-android
+          platform: Android
+          command: lint
+          context: guild-ci-test-projects-fastlane
+          requires:
+            - bundle_pods
+      - fastlane:
+          name: build-and-deploy-android-staging
+          platform: Android
+          command: deploy_staging
+          context: guild-ci-test-projects-fastlane
+          requires:
+            - lint-android
+          filters:
+            branches:
+              only: /Fabric/Staging/.*$/
+      - fastlane:
+          name: build-and-deploy-android-production
+          platform: Android
+          command: deploy_production
+          context: guild-ci-test-projects-fastlane
+          requires:
+            - lint-android
+          filters:
+            branches:
+              only: /Fabric/Production/.*$/
+      - fastlane:
+          name: build-and-deploy-android-release
+          platform: Android
+          command: deploy_play_store
+          context: guild-ci-test-projects-fastlane
+          requires:
+            - lint-android
+          filters:
+            branches:
+              only: /GooglePlayStore/.*$/
