@@ -29,6 +29,7 @@ jobs:
         type: enum
         enum: ["ios", "android"]
     executor: << parameters.platform >>
+    working_directory: ~/guild-ci-test-projects
     steps:
       - checkout
       - save_cache:
