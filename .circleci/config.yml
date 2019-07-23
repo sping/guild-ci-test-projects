@@ -112,7 +112,6 @@ workflows:
           context: guild-ci-test-projects-fastlane
       # iOS
       - bundle_ios_dependencies:
-          platform: iOS
           context: guild-ci-test-projects-fastlane
           requires:
             - checkout_code
@@ -150,9 +149,7 @@ workflows:
             tags:
               only: /^Appstore/.*$/
       # Android
-      - bundle_dependencies:
-          name: bundle_android_dependencies
-          platform: Android
+      - bundle_android_dependencies:
           context: guild-ci-test-projects-fastlane
           requires:
             - checkout_code
