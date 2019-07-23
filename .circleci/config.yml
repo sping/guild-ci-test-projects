@@ -128,7 +128,7 @@ workflows:
           requires:
             - lint-ios
           filters:
-            branches:
+            tags:
               only: /Fabric/Staging/.*$/
       - fastlane_ios:
           name: build-and-deploy-ios-production
@@ -137,7 +137,7 @@ workflows:
           requires:
             - lint-ios
           filters:
-            branches:
+            tags:
               only: /Fabric/Production/.*$/
       - fastlane_ios:
           name: build-and-deploy-ios-release
@@ -146,7 +146,7 @@ workflows:
           requires:
             - lint-ios
           filters:
-            branches:
+            tags:
               only: /Appstore/.*$/
       # Android
       - bundle_dependencies:
@@ -162,7 +162,7 @@ workflows:
           requires:
             - bundle_android_dependencies
           filters:
-            branches:
+            tags:
               only: /Fabric/Staging/.*$/
       - fastlane_android:
           name: build-and-deploy-android-production
@@ -171,7 +171,7 @@ workflows:
           requires:
             - bundle_android_dependencies
           filters:
-            branches:
+            tags:
               only: /Fabric/Production/.*$/
       - fastlane_android:
           name: build-and-deploy-android-release
@@ -180,5 +180,5 @@ workflows:
           requires:
             - bundle_android_dependencies
           filters:
-            branches:
+            tags:
               only: /GooglePlayStore/.*$/
