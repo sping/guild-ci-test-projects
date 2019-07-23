@@ -36,7 +36,8 @@ platform :ios do
   lane :lint do
     swiftlint(
       reporter: "html",
-      output_file: "fastlane/swiftlint.html"
+      output_file: "fastlane/swiftlint.html",
+      executable: "Pods/SwiftLint/swiftlint"
     )
   end
 
@@ -56,7 +57,7 @@ platform :ios do
     # Execute environment switching / scheme switching here
     send_slack_notification(platform: 'iOS', type: 'beta', environment: 'App Store')
   end
-  
+
   desc 'Build the iOS application and push it to Fabric'
   private_lane :beta do
     increment_build_number(xcodeproj: './GitViewer.xcodeproj')
@@ -70,7 +71,7 @@ platform :ios do
 
     build_beta
     upload_to_fabric
-    
+
   end
 
   # Build the release version of the app and upload it to the App Store
