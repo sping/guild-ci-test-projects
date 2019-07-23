@@ -59,25 +59,40 @@ jobs:
             - Pods
             - ~/.cocoapods
 
-  fastlane:
+  fastlane_ios:
     parameters:
-      platform:
-        description: "iOS or Android"
-        type: enum
-        enum: ["iOS", "Android"]
       command:
         description: "Fastlane command to run"
         type: string
     docker:
       - image: circleci/ruby:2.6.3-node
-    working_directory: ~/guild-ci-test-projects/<< parameters.platform >>/GitViewer/
+    working_directory: ~/guild-ci-test-projects/iOS/GitViewer/
     steps:
       - restore_cache:
           key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-bundle-<< parameters.platform >>-{{ checksum "Gemfile.lock" }}'
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-iOS-{{ checksum "Gemfile.lock" }}'
       - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-pods-<< parameters.platform >>-{{ checksum "Podfile.lock" }}'
+          key: '{{ .Environment.CACHE_VERSION }}-pods-iOS-{{ checksum "Podfile.lock" }}'
+      - run: gem update --system
+      - run: gem install bundle
+      - run: bundle install --path vendor/bundle
+      - run:
+          command: bundle exec fastlane << parameters.command >>
+
+  fastlane_android:
+    parameters:
+      command:
+        description: "Fastlane command to run"
+        type: string
+    docker:
+      - image: circleci/ruby:2.6.3-node
+    working_directory: ~/guild-ci-test-projects/Android/GitViewer/
+    steps:
+      - restore_cache:
+          key: '{{ .Environment.CACHE_VERSION }}-repo-{{ .Environment.CIRCLE_SHA1 }}'
+      - restore_cache:
+          key: '{{ .Environment.CACHE_VERSION }}-bundle-Android-{{ checksum "Gemfile.lock" }}'
       - run: gem update --system
       - run: gem install bundle
       - run: bundle install --path vendor/bundle
@@ -100,16 +115,14 @@ workflows:
           context: guild-ci-test-projects-fastlane
           requires:
             - bundle_ios_dependencies
-      - fastlane:
+      - fastlane_ios:
           name: lint-ios
-          platform: iOS
           command: lint
           context: guild-ci-test-projects-fastlane
           requires:
             - bundle_pods
-      - fastlane:
+      - fastlane_ios:
           name: build-and-deploy-ios-staging
-          platform: iOS
           command: deploy_staging
           context: guild-ci-test-projects-fastlane
           requires:
@@ -117,9 +130,8 @@ workflows:
           filters:
             branches:
               only: /Fabric/Staging/.*$/
-      - fastlane:
+      - fastlane_ios:
           name: build-and-deploy-ios-production
-          platform: iOS
           command: deploy_production
           context: guild-ci-test-projects-fastlane
           requires:
@@ -127,9 +139,8 @@ workflows:
           filters:
             branches:
               only: /Fabric/Production/.*$/
-      - fastlane:
+      - fastlane_ios:
           name: build-and-deploy-ios-release
-          platform: iOS
           command: deploy_app_store
           context: guild-ci-test-projects-fastlane
           requires:
@@ -144,16 +155,14 @@ workflows:
           context: guild-ci-test-projects-fastlane
           requires:
             - checkout_code
-      - fastlane:
+      - fastlane_android:
           name: lint-android
-          platform: Android
           command: lint
           context: guild-ci-test-projects-fastlane
           requires:
             - bundle_android_dependencies
-      - fastlane:
+      - fastlane_android:
           name: build-and-deploy-android-staging
-          platform: Android
           command: deploy_staging
           context: guild-ci-test-projects-fastlane
           requires:
@@ -161,9 +170,8 @@ workflows:
           filters:
             branches:
               only: /Fabric/Staging/.*$/
-      - fastlane:
+      - fastlane_android:
           name: build-and-deploy-android-production
-          platform: Android
           command: deploy_production
           context: guild-ci-test-projects-fastlane
           requires:
@@ -171,9 +179,8 @@ workflows:
           filters:
             branches:
               only: /Fabric/Production/.*$/
-      - fastlane:
+      - fastlane_android:
           name: build-and-deploy-android-release
-          platform: Android
           command: deploy_play_store
           context: guild-ci-test-projects-fastlane
           requires:
