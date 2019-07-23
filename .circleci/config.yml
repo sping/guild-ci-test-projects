@@ -15,11 +15,16 @@ executors:
     working_directory: ~/guild-ci-test-projects/Android/GitViewer/
 
 commands:
-  setup_gems:
+  setup_gems_ios:
+    steps:
+      - run: gem install bundler --force
+      - run: bundle install --path vendor/bundle
+  setup_gems_android:
     steps:
       - run: gem update --system
       - run: gem install bundler --force
       - run: bundle install --path vendor/bundle
+
 
 jobs:
   checkout_code:
@@ -52,7 +57,7 @@ jobs:
           keys:
             - '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
             - '{{ .Environment.CACHE_VERSION }}-pods-ios'
-      - setup_gems
+      - setup_gems_ios
       - run: bundle exec pod install
       - save_cache:
           key: '{{ .Environment.CACHE_VERSION }}-bundle-ios-{{ checksum "Gemfile.lock" }}'
@@ -77,7 +82,7 @@ jobs:
           key: '{{ .Environment.CACHE_VERSION }}-bundle-ios-{{ checksum "Gemfile.lock" }}'
       - restore_cache:
           key: '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
-      - setup_gems
+      - setup_gems_ios
       - run:
           command: bundle exec fastlane << parameters.command >>
 
@@ -92,7 +97,7 @@ jobs:
           keys:
             - '{{ .Environment.CACHE_VERSION }}-bundle-android-{{ checksum "Gemfile.lock" }}'
             - '{{ .Environment.CACHE_VERSION }}-bundle-android'
-      - setup_gems
+      - setup_gems_android
       - save_cache:
           key: '{{ .Environment.CACHE_VERSION }}-bundle-android-{{ checksum "Gemfile.lock" }}'
           paths:
@@ -109,7 +114,7 @@ jobs:
           key: '{{ .Environment.CACHE_VERSION }}-repo-android-{{ .Environment.CIRCLE_SHA1 }}'
       - restore_cache:
           key: '{{ .Environment.CACHE_VERSION }}-bundle-android-{{ checksum "Gemfile.lock" }}'
-      - setup_gems
+      - setup_gems_android
       - run:
           command: bundle exec fastlane << parameters.command >>
 
