@@ -53,16 +53,10 @@ jobs:
             - '{{ .Environment.CACHE_VERSION }}-bundle-ios-{{ checksum "Gemfile.lock" }}'
             - '{{ .Environment.CACHE_VERSION }}-bundle-ios'
       - setup_gems_ios
-      - run: bundle exec pod install
       - save_cache:
           key: '{{ .Environment.CACHE_VERSION }}-bundle-ios-{{ checksum "Gemfile.lock" }}'
           paths:
             - vendor/bundle
-      - save_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
-          paths:
-            - Pods
-            - ~/.cocoapods
 
   fastlane_ios:
     parameters:
