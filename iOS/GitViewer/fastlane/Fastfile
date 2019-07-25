@@ -18,7 +18,7 @@ default_platform(:ios)
 
 # pre-run checks
 before_all do
-  raise '.env not correctly set, it\'s missing the Apple credentials' unless ENV['APPLE_ACCOUNT'] && ENV['APPLE_TEAM_ID'] && ENV['APPLE_ID']
+  #raise '.env not correctly set, it\'s missing the Apple credentials' unless ENV['APPLE_ACCOUNT'] && ENV['APPLE_TEAM_ID'] && ENV['APPLE_ID']
   raise '.env not correctly set, it\'s missing Fabric credentials' unless ENV['FABRIC_TOKEN'] && ENV['FABRIC_BUILD_SECRET']
   raise '.env not correctly set, it\'s missing the Slack url' unless ENV['RELEASE_SLACK_URL']
 end
@@ -31,6 +31,7 @@ platform :ios do
       podfile: "Podfile",
       try_repo_update_on_error: true
     )
+    setup_circle_ci
   end
 
   lane :lint do
@@ -61,13 +62,7 @@ platform :ios do
   desc 'Build the iOS application and push it to Fabric'
   private_lane :beta do
     increment_build_number(xcodeproj: './GitViewer.xcodeproj')
-    get_certificates(
-      output_path: './fastlane/certificates'
-    )
-
-    get_provisioning_profile(
-      output_path: './fastlane/certificates'
-    )
+    match(type: 'enterprise')
 
     build_beta
     upload_to_fabric
