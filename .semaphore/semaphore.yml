@@ -56,3 +56,18 @@ blocks:
         - name: "Build"
           commands:
             - echo 'fastlane deploy_xxx'
+
+  - name: "Test on Android"
+    task:
+      prologue:
+        commands:
+          - checkout
+          - cd Android/GitViewer
+          - cache restore gems-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),gems-$SEMAPHORE_GIT_BRANCH-,gems-master-
+          - bundle install --path vendor/bundle
+          - cache store gems-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
+      jobs:
+        - name: "Tests"
+          commands:
+            - gradlew lint
+
