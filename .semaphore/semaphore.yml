@@ -33,7 +33,12 @@ blocks:
       jobs:
       - name: "Tests"
         commands:
-          - echo "Test completed"
+          - cd iOS/GitViewer
+          - bundle install --path vendor/bundle
+          - bundle exec fastlane lint
+      - prologue:
+          commands:
+            - checkout
 
   - name: "Build for iOS"
     dependencies: ["Test on iOS"]
@@ -63,7 +68,7 @@ blocks:
           - echo "Test completed"
 
   - name: "Release"
-    dependencies: ["Test on Android", "Test on iOS"]
+    dependencies: ["Test on Android", "Build for iOS"]
     task:
       jobs:
       - name: "🚀 Google Play"
@@ -72,6 +77,3 @@ blocks:
       - name: "🚀 AppStore"
         commands:
           - echo "Release completed"
-      - name: "🚀 Web"
-        commands:
-          - echo "Rollout completed"
