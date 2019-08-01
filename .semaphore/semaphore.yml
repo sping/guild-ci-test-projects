@@ -9,66 +9,40 @@ agent:
       image: iisue/alpine-android-fastlane
 
 blocks:
-  - name: "Build for Android"
-    dependencies: []
-    task:
-      jobs:
-        - name: "Build"
-          commands:
-            - cd Android/GitViewer
-            - gem update --system
-            - gem install bundler --force
-            - bundle install --path vendor/bundle
-      prologue:
-        commands:
-          - checkout
-
-  - name: "Build for iOS"
-    dependencies: []
-    task:
-      agent:
-        machine:
-          type: a1-standard-4
-          os_image: macos-mojave
-      jobs:
-        - name: "Build"
-          commands:
-            - cd iOS/GitViewer
-            - bundle install --path vendor/bundle
-      prologue:
-        commands:
-          - checkout
-
   - name: "Test on iOS"
-    dependencies: ["Build for iOS"]
+    dependencies: []
     task:
       agent:
         machine:
           type: a1-standard-4
           os_image: macos-mojave
+      prologue:
+        commands:
+          - checkout
+          - cd iOS/GitViewer
+          - cache restore gems-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),gems-$SEMAPHORE_GIT_BRANCH-,gems-master-
+          - bundle install --path vendor/bundle
+          - cache store gems-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
       jobs:
         - name: "Tests"
           commands:
             - bundle exec fastlane lint
 
-  - name: "Test on Android"
-    dependencies: ["Build for Android"]
+  - name: "Build for iOS"
+    dependencies: ["Test on iOS"]
     task:
+      agent:
+        machine:
+          type: a1-standard-4
+          os_image: macos-mojave
+      prologue:
+        commands:
+          - checkout
+          - cd iOS/GitViewer
+          - cache restore gems-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),gems-$SEMAPHORE_GIT_BRANCH-,gems-master-
+          - bundle install --path vendor/bundle
+          - cache store gems-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
       jobs:
-        - name: "Tests 1/2"
+        - name: "Build"
           commands:
-            - echo "Test completed"
-        - name: "Tests 2/2"
-          commands:
-            - echo "Test completed"
-
-  - name: "Release"
-    dependencies: ["Test on Android", "Build for iOS"]
-    task:
-      jobs:
-        - name: "🚀 Google Play"
-          commands:
-            - echo "Release completed"
-        - name: "🚀 AppStore"
-          commands:
-            - echo "Release completed"
+            - echo 'fastlane deploy_xxx'
