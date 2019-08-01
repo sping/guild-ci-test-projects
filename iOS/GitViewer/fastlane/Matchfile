@@ -1,0 +1,14 @@
+git_url("git@github.com:sping/fastline-certificates.git")
+
+storage_mode("git")
+
+type("enterprise") # The default type, can be: appstore, adhoc, enterprise or development
+
+app_identifier("nl.sping.GitViewer")
+username("spingdevelopment@gmail.com") # Your Apple Developer Portal username
+readonly(true)
+
+# For all available options run `fastlane match --help`
+# Remove the # in the beginning of the line to enable the other options
+
+# The docs are available on https://docs.fastlane.tools/actions/match

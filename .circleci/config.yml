@@ -52,21 +52,11 @@ jobs:
           keys:
             - '{{ .Environment.CACHE_VERSION }}-bundle-ios-{{ checksum "Gemfile.lock" }}'
             - '{{ .Environment.CACHE_VERSION }}-bundle-ios'
-      - restore_cache:
-          keys:
-            - '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
-            - '{{ .Environment.CACHE_VERSION }}-pods-ios'
       - setup_gems_ios
-      - run: bundle exec pod install
       - save_cache:
           key: '{{ .Environment.CACHE_VERSION }}-bundle-ios-{{ checksum "Gemfile.lock" }}'
           paths:
             - vendor/bundle
-      - save_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
-          paths:
-            - Pods
-            - ~/.cocoapods
 
   fastlane_ios:
     parameters:
@@ -80,10 +70,17 @@ jobs:
       - restore_cache:
           key: '{{ .Environment.CACHE_VERSION }}-bundle-ios-{{ checksum "Gemfile.lock" }}'
       - restore_cache:
-          key: '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
+          keys:
+            - '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
+            - '{{ .Environment.CACHE_VERSION }}-pods-ios'
       - setup_gems_ios
       - run:
           command: bundle exec fastlane << parameters.command >>
+      - save_cache:
+          key: '{{ .Environment.CACHE_VERSION }}-pods-ios-{{ checksum "Podfile.lock" }}'
+          paths:
+            - Pods
+            - ~/.cocoapods
 
   # Android
 
