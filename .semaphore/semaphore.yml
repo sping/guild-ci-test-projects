@@ -72,5 +72,5 @@ blocks:
       jobs:
         - name: "Tests"
           commands:
-            - gradlew lint
+            - ./gradlew lint
 
