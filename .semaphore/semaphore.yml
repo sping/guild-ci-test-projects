@@ -6,7 +6,7 @@ agent:
     os_image: ubuntu1804
   containers:
     - name: main
-      image: iisue/alpine-android-fastlane
+      image: semaphoreci/android:version
 
 blocks:
   # - name: "Test on iOS"
@@ -70,7 +70,7 @@ blocks:
           - bundle install --path vendor/bundle
           - cache store bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
       jobs:
-        - name: "Tests"
+        - name: "Lint"
           commands:
             - ./gradlew lint
 
