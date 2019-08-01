@@ -58,6 +58,7 @@ blocks:
             - echo 'fastlane deploy_xxx'
 
   - name: "Test on Android"
+    dependencies: []
     task:
       prologue:
         commands:
