@@ -17,7 +17,10 @@ blocks:
         commands:
           - gem update --system
           - gem install bundler --force
-          - bundle update --bundler
+          - bundle update --bundle
+      prologue:
+        commands:
+          - checkout
 
   - name: "Build for iOS"
     dependencies: []
