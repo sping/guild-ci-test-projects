@@ -55,7 +55,7 @@ blocks:
           - echo "Test completed"
 
   - name: "Release"
-    dependencies: ["Test on Android", "Test on iOS", "Test on Web"]
+    dependencies: ["Test on Android", "Test on iOS"]
     task:
       jobs:
       - name: "🚀 Google Play"
