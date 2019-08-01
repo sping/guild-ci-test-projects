@@ -16,6 +16,9 @@ blocks:
         machine:
           type: a1-standard-4
           os_image: macos-mojave
+      env_vars:
+        - name: LANG
+          value: en_US.UTF-8
       prologue:
         commands:
           - checkout
@@ -26,7 +29,11 @@ blocks:
       jobs:
         - name: "Tests"
           commands:
+            - cache restore pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock)
+            - cache restore cocao-pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock)
             - bundle exec fastlane lint
+            - cache store pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock) Pods
+            - cache store cocao-pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock) ~/.cocoapods
 
   - name: "Build for iOS"
     dependencies: ["Test on iOS"]
@@ -35,6 +42,9 @@ blocks:
         machine:
           type: a1-standard-4
           os_image: macos-mojave
+      env_vars:
+        - name: LANG
+          value: en_US.UTF-8
       prologue:
         commands:
           - checkout
