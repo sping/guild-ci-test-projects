@@ -13,15 +13,15 @@ blocks:
     dependencies: []
     task:
       jobs:
-      - name: "Build"
-        commands:
-          - cd Android/GitViewer
-          - gem update --system
-          - gem install bundler --force
-          - bundle install --path vendor/bundle
-      - prologue:
+        - name: "Build"
           commands:
-            - checkout
+            - cd Android/GitViewer
+            - gem update --system
+            - gem install bundler --force
+            - bundle install --path vendor/bundle
+      prologue:
+        commands:
+          - checkout
 
   - name: "Build for iOS"
     dependencies: []
@@ -31,13 +31,13 @@ blocks:
           type: a1-standard-4
           os_image: macos-mojave
       jobs:
-      - name: "Build"
-        commands:
-          - cd iOS/GitViewer
-          - bundle install --path vendor/bundle
-      - prologue:
+        - name: "Build"
           commands:
-            - checkout
+            - cd iOS/GitViewer
+            - bundle install --path vendor/bundle
+      prologue:
+        commands:
+          - checkout
 
   - name: "Test on iOS"
     dependencies: ["Build for iOS"]
@@ -47,28 +47,28 @@ blocks:
           type: a1-standard-4
           os_image: macos-mojave
       jobs:
-      - name: "Tests"
-        commands:
-          - bundle exec fastlane lint
+        - name: "Tests"
+          commands:
+            - bundle exec fastlane lint
 
   - name: "Test on Android"
     dependencies: ["Build for Android"]
     task:
       jobs:
-      - name: "Tests 1/2"
-        commands:
-          - echo "Test completed"
-      - name: "Tests 2/2"
-        commands:
-          - echo "Test completed"
+        - name: "Tests 1/2"
+          commands:
+            - echo "Test completed"
+        - name: "Tests 2/2"
+          commands:
+            - echo "Test completed"
 
   - name: "Release"
     dependencies: ["Test on Android", "Build for iOS"]
     task:
       jobs:
-      - name: "🚀 Google Play"
-        commands:
-          - echo "Release completed"
-      - name: "🚀 AppStore"
-        commands:
-          - echo "Release completed"
+        - name: "🚀 Google Play"
+          commands:
+            - echo "Release completed"
+        - name: "🚀 AppStore"
+          commands:
+            - echo "Release completed"
