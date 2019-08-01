@@ -1,63 +1,69 @@
 version: v1.0
-name: First pipeline example
+name: Cross-platform pipeline
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
+  containers:
+    - name: main
+      image: iisue/alpine-android-fastlane
 
 blocks:
-  - name: "Build"
-    task:
-      env_vars:
-        - name: APP_ENV
-          value: prod
-      jobs:
-      - name: Docker build
-        commands:
-          - checkout
-          - ls -1
-          - echo $APP_ENV
-          - echo "Docker build..."
-          - echo "done"
-
-  - name: "Smoke tests"
+  - name: "Build for Android"
+    dependencies: []
     task:
       jobs:
-      - name: Smoke
+      - name: "Build"
         commands:
-          - checkout
-          - echo "make smoke"
+          - gem update --system
+          - gem install bundler --force
+          - bundle update --bundler
 
-  - name: "Unit tests"
+  - name: "Build for iOS"
+    dependencies: []
+    task:
+      agent:
+        machine:
+          type: a1-standard-4
+          os_image: macos-mojave
+      jobs:
+      - name: "Build"
+        commands:
+          - echo "Build completed"
+
+  - name: "Test on Android"
+    dependencies: ["Build for Android"]
     task:
       jobs:
-      - name: RSpec
+      - name: "Tests 1/2"
         commands:
-          - checkout
-          - echo "make rspec"
-
-      - name: Lint code
+          - echo "Test completed"
+      - name: "Tests 2/2"
         commands:
-          - checkout
-          - echo "make lint"
+          - echo "Test completed"
 
-      - name: Check security
+  - name: "Test on iOS"
+    dependencies: ["Build for iOS"]
+    task:
+      agent:
+        machine:
+          type: a1-standard-4
+          os_image: macos-mojave
+      jobs:
+      - name: "Tests"
         commands:
-          - checkout
-          - echo "make security"
+          - echo "Test completed"
 
-  - name: "Integration tests"
+  - name: "Release"
+    dependencies: ["Test on Android", "Test on iOS", "Test on Web"]
     task:
       jobs:
-      - name: Cucumber
+      - name: "🚀 Google Play"
         commands:
-          - checkout
-          - echo "make cucumber"
-
-  - name: "Push Image"
-    task:
-      jobs:
-      - name: Push
+          - echo "Release completed"
+      - name: "🚀 AppStore"
         commands:
-          - checkout
-          - echo "make docker.push"
+          - echo "Release completed"
+      - name: "🚀 Web"
+        commands:
+          - echo "Rollout completed"
