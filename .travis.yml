@@ -35,6 +35,7 @@ cache:
   - $HOME/.android/build-cache
 
 before_script:
+  - cd Android/GitViewer
   - chmod +x gradlew
 
 script:
