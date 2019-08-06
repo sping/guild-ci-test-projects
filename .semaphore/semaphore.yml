@@ -66,10 +66,10 @@ blocks:
   - name: "Test on Android"
     skip:
       when: "branch != 'feature/semaphoreci'"
-    secrets:
-      - name: ios-secrets
     dependencies: []
     task:
+      secrets:
+        - name: ios-secrets
       env_vars:
         - name: ANDROID_COMPILE_SDK
           value: "28"
