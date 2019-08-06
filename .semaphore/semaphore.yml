@@ -36,10 +36,8 @@ blocks:
         - name: "Tests"
           commands:
             - cache restore pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock)
-            - cache restore cocao-pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock)
             - bundle exec fastlane lint
             - cache store pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock) Pods
-            - cache store cocao-pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock) ~/.cocoapods
 
   # - name: "Build for iOS"
   #   dependencies: ["Test on iOS"]
@@ -79,13 +77,19 @@ blocks:
           value: "4333796"
       prologue:
         commands:
-          - apk add --no-cache lftp
+          - apk add --no-cache lftp numfmt
           - checkout
           - cd Android/GitViewer
+          - cache restore bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),bundle-android-$SEMAPHORE_GIT_BRANCH-,bundle-android-master-
           - gem update --system
           - gem install bundler --force
           - bundle install --path vendor/bundle
+          - cache store bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
       jobs:
         - name: "Lint"
           commands:
             - ./gradlew lint
+        - name: "Dokka documentation"
+          commands:
+            - ./gradlew dokka
+
