@@ -9,31 +9,31 @@ agent:
       image: iisue/alpine-android-fastlane
 
 blocks:
-  # - name: "Test on iOS"
-  #   dependencies: []
-  #   task:
-  #     agent:
-  #       machine:
-  #         type: a1-standard-4
-  #         os_image: macos-mojave
-  #     env_vars:
-  #       - name: LANG
-  #         value: en_US.UTF-8
-  #     prologue:
-  #       commands:
-  #         - checkout
-  #         - cd iOS/GitViewer
-  #         - cache restore bundle-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),bundle-ios-$SEMAPHORE_GIT_BRANCH-,bundle-ios-master-
-  #         - bundle install --path vendor/bundle
-  #         - cache store bundle-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
-  #     jobs:
-  #       - name: "Tests"
-  #         commands:
-  #           - cache restore pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock)
-  #           - cache restore cocao-pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock)
-  #           - bundle exec fastlane lint
-  #           - cache store pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock) Pods
-  #           - cache store cocao-pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock) ~/.cocoapods
+  - name: "Test on iOS"
+    dependencies: []
+    task:
+      agent:
+        machine:
+          type: a1-standard-4
+          os_image: macos-mojave
+      env_vars:
+        - name: LANG
+          value: en_US.UTF-8
+      prologue:
+        commands:
+          - checkout
+          - cd iOS/GitViewer
+          - cache restore bundle-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),bundle-ios-$SEMAPHORE_GIT_BRANCH-,bundle-ios-master-
+          - bundle install --path vendor/bundle
+          - cache store bundle-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
+      jobs:
+        - name: "Tests"
+          commands:
+            - cache restore pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock)
+            - cache restore cocao-pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock)
+            - bundle exec fastlane lint
+            - cache store pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock) Pods
+            - cache store cocao-pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock) ~/.cocoapods
 
   # - name: "Build for iOS"
   #   dependencies: ["Test on iOS"]
@@ -57,30 +57,30 @@ blocks:
   #         commands:
   #           - echo 'fastlane deploy_xxx'
 
-  - name: "Test on Android"
-    skip:
-      when: "branch != 'feature/semaphoreci'"
-    dependencies: []
-    task:
-      env_vars:
-        - name: ANDROID_COMPILE_SDK
-          value: "28"
-        - name: ANDROID_BUILD_TOOLS
-          value: "28.0.3"
-        - name: ANDROID_SDK_TOOLS
-          value: "4333796"
-      prologue:
-        commands:
-          - apk add --no-cache lftp
-          - checkout
-          - cd Android/GitViewer
-          - cache restore bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),bundle-android-$SEMAPHORE_GIT_BRANCH-,bundle-android-master-
-          - gem update --system
-          - gem install bundler --force
-          - bundle install --path vendor/bundle
-          - cache store bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
-      jobs:
-        - name: "Lint"
-          commands:
-            - ./gradlew lint
+  # - name: "Test on Android"
+  #   skip:
+  #     when: "branch != 'feature/semaphoreci'"
+  #   dependencies: []
+  #   task:
+  #     env_vars:
+  #       - name: ANDROID_COMPILE_SDK
+  #         value: "28"
+  #       - name: ANDROID_BUILD_TOOLS
+  #         value: "28.0.3"
+  #       - name: ANDROID_SDK_TOOLS
+  #         value: "4333796"
+  #     prologue:
+  #       commands:
+  #         - apk add --no-cache lftp
+  #         - checkout
+  #         - cd Android/GitViewer
+  #         - cache restore bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),bundle-android-$SEMAPHORE_GIT_BRANCH-,bundle-android-master-
+  #         - gem update --system
+  #         - gem install bundler --force
+  #         - bundle install --path vendor/bundle
+  #         - cache store bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
+  #     jobs:
+  #       - name: "Lint"
+  #         commands:
+  #           - ./gradlew lint
 
