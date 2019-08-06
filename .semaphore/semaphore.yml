@@ -64,11 +64,11 @@ blocks:
     task:
       env_vars:
         - name: ANDROID_COMPILE_SDK
-          value: 28
+          value: "28"
         - name: ANDROID_BUILD_TOOLS
-          value: 28.0.3
+          value: "28.0.3"
         - name: ANDROID_SDK_TOOLS
-          value: 4333796
+          value: "4333796"
       prologue:
         commands:
           - checkout
