@@ -71,7 +71,7 @@ blocks:
           value: "4333796"
       prologue:
         commands:
-          - sudo apt install lftp
+          - apk add --no-cache lftp
           - checkout
           - cd Android/GitViewer
           - cache restore bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),bundle-android-$SEMAPHORE_GIT_BRANCH-,bundle-android-master-
