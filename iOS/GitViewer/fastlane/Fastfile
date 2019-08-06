@@ -40,6 +40,7 @@ platform :ios do
       output_file: "fastlane/swiftlint.html",
       executable: "Pods/SwiftLint/swiftlint"
     )
+    send_success_notification(platform: 'iOS', type: 'lint')
   end
 
   lane :deploy_staging do
@@ -91,6 +92,18 @@ platform :ios do
     crashlytics(
     api_token: ENV['FABRIC_TOKEN'],
     build_secret: ENV['FABRIC_BUILD_SECRET']
+    )
+  end
+
+  private_lane :send_success_notification do |args|
+    slack(
+      slack_url: ENV['RELEASE_SLACK_URL'],
+      channel: "#ci_cd_guild",
+      message: "#{args[:platform]} #{args[:type]} succeeded!",
+      payload: {
+        'Build Date' => Time.new.to_s,
+        'Built by' => 'Fastlane'
+      }
     )
   end
 
