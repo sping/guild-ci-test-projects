@@ -77,7 +77,7 @@ blocks:
           value: "4333796"
       prologue:
         commands:
-          - apk add --no-cache lftp numfmt
+          - apk add --no-cache lftp coreutils
           - checkout
           - cd Android/GitViewer
           - cache restore bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),bundle-android-$SEMAPHORE_GIT_BRANCH-,bundle-android-master-
