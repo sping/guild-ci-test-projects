@@ -1,7 +1,6 @@
 language: android
 sudo: required
 jdk: oraclejdk8
-conditions: v1
 
 env:
   global:
@@ -27,6 +26,7 @@ before_install:
   - cd Android/GitViewer
   - gem update --system
   - gem install fastlane --quiet
+  - gem install travis-conditions
   - bundle install
   - bundle update
 
@@ -47,28 +47,51 @@ before_script:
 script:
   -./gradlew dokka
 
-jobs:
-  include:
-    - stage: deploy_staging
-      script: bundle exec fastlane deploy_staging
-    - stage: deploy_production
-      script: bundle exec fastlane deploy_production
-    - stage: deploy_playstore
-      script: bundle exec fastlane deploy_play_store
+deploy:
+  # Deploy a Staging version when Fabric/Staging tag is pushed
+  - provider: script
+    script: bundle exec fastlane deploy_staging
+    on:
+      tags: true
+      conditions: "$TRAVIS_TAG =~ (?:Fabric\/Staging)"
+
+  # Deploy a Production version when Fabric/Production tag is pushed
+  - provider: script
+    script: bundle exec fastlane deploy_production
+    on:
+      tags: true
+      conditions: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
+
+  # Deploy a Production version to the Google Play Store
+  - provider: script
+    script: bundle exec fastlane deploy_play_store
+    on: 
+      tags: true
+      conditions: $TRAVIS_TAG =~ (?:GooglePlayStore)
+
+
+# jobs:
+#   include:
+#     - stage: deploy_staging
+#       script: bundle exec fastlane deploy_staging
+#     - stage: deploy_production
+#       script: bundle exec fastlane deploy_production
+#     - stage: deploy_playstore
+#       script: bundle exec fastlane deploy_play_store
     
-stages:
-  - name: deploy_staging
-    deploy:
-      on:
-        tags: true
-        condition: "$TRAVIS_TAG =~ (?:Fabric\/Staging)"
-  - name: deploy_production
-    deploy:
-      on:
-        tags: true
-        condition: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
-  - name: deploy_playstore
-    deploy:
-      on:
-        tags: true
-        condition: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
+# stages:
+#   - name: deploy_staging
+#     deploy:
+#       on:
+#         tags: true
+#         condition: "$TRAVIS_TAG =~ (?:Fabric\/Staging)"
+#   - name: deploy_production
+#     deploy:
+#       on:
+#         tags: true
+#         condition: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
+#   - name: deploy_playstore
+#     deploy:
+#       on:
+#         tags: true
+#         condition: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
