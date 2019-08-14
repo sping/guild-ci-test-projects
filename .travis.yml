@@ -44,5 +44,5 @@ before_script:
   - chmod +x gradlew
 
 script:
-  - bundle exec fastlane beta
+  - bundle exec fastlane deploy_staging
   - ./gradlew dokka
