@@ -26,6 +26,8 @@ before_install:
   - cd Android/GitViewer
   - gem update --system
   - gem install fastlane --quiet
+  - bundle install
+  - bundle update
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
