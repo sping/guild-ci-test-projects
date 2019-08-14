@@ -52,6 +52,9 @@ deploy:
   - provider: script
     script: bundle exec fastlane deploy_staging
     on:
+      branches:
+        only:
+          - travisci
       tags: true
       conditions: "$TRAVIS_TAG =~ (?:Fabric\/Staging)"
 
@@ -59,6 +62,9 @@ deploy:
   - provider: script
     script: bundle exec fastlane deploy_production
     on:
+      branches:
+        only:
+          - travisci
       tags: true
       conditions: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
 
@@ -66,6 +72,9 @@ deploy:
   - provider: script
     script: bundle exec fastlane deploy_play_store
     on: 
+      branches:
+        only:
+          - travisci
       tags: true
       conditions: $TRAVIS_TAG =~ (?:GooglePlayStore)
 
