@@ -1,6 +1,7 @@
 language: android
 sudo: required
 jdk: oraclejdk8
+conditions: v1
 
 env:
   global:
@@ -57,8 +58,17 @@ jobs:
     
 stages:
   - name: deploy_staging
-    if: "$TRAVIS_TAG = (?:Fabric\/Staging)"
+    deploy:
+      on:
+        tags: true
+        condition: "$TRAVIS_TAG =~ (?:Fabric\/Staging)"
   - name: deploy_production
-    if: "$TRAVIS_TAG = (?:Fabric\/Production)"
+    deploy:
+      on:
+        tags: true
+        condition: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
   - name: deploy_playstore
-    if: "$TRAVIS_TAG = (?:GooglePlayStore)"
+    deploy:
+      on:
+        tags: true
+        condition: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
