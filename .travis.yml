@@ -5,5 +5,9 @@ services:
 before_install:
   - docker pull mreichelt/android
   - docker run --rm -it mreichelt/android:latest
-  - docker exec build git clone https://github.com/mreichelt/docker-android.git
-  
+  - docker exec build git clone https://github.com/sping/guild-ci-test-projects.git
+  - docker exec gem update --system
+  - docker exec gem install fastlane --quiet
+  - docker exec gem install travis-conditions
+  - docker exec bundle install
+  - docker exec bundle update
