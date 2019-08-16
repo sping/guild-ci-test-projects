@@ -48,7 +48,7 @@ script:
   -./gradlew dokka
 
 deploy:
-  # Deploy a Staging version when Fabric/Staging tag is pushed
+  # Deploy a Staging version when Fabric/Staging tag is pushed!
   - provider: script
     script: bundle exec fastlane deploy_staging
     on:
