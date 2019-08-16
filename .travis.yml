@@ -1,10 +1,9 @@
 sudo: required
-language: android
+language: cpp
 services:
   - docker
 before_install:
-  - docker pull user/build:latest
-  - docker run -it -d --name build user/build bash
-  - docker exec build git clone https://github.com/mreichelt/docker-android.git
-script:
+  - docker pull mreichelt/android
   - docker run --rm -it mreichelt/android:latest
+  - docker exec build git clone https://github.com/mreichelt/docker-android.git
+  
