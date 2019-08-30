@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 language: android
 sudo: required
 jdk: oraclejdk8
@@ -44,36 +51,41 @@ before_script:
   - cd $TRAVIS_BUILD_DIR/Android/GitViewer
   - chmod +x gradlew
 
-script:
-  -./gradlew dokka
+jobs:
+  include:
+    - stage: lint
+      script: ./gradlew -lint
+    - stage: documentation
+      script: ./gradlew dokka
+    - stage: deploy
+      deploy:
+        # Deploy a Staging version when Fabric/Staging tag is pushed!
+        - provider: script
+          script: bundle exec fastlane deploy_staging
+          on:
+            branches:
+              only:
+                - travisci
+            tags: true
+            conditions: "$TRAVIS_TAG =~ (?:Fabric\/Staging)"
 
-deploy:
-  # Deploy a Staging version when Fabric/Staging tag is pushed!
-  - provider: script
-    script: bundle exec fastlane deploy_staging
-    on:
-      branches:
-        only:
-          - travisci
-      tags: true
-      conditions: "$TRAVIS_TAG =~ (?:Fabric\/Staging)"
+        # Deploy a Production version when Fabric/Production tag is pushed
+        - provider: script
+          script: bundle exec fastlane deploy_production
+          on:
+            branches:
+              only:
+                - travisci
+            tags: true
+            conditions: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
 
-  # Deploy a Production version when Fabric/Production tag is pushed
-  - provider: script
-    script: bundle exec fastlane deploy_production
-    on:
-      branches:
-        only:
-          - travisci
-      tags: true
-      conditions: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
+        # Deploy a Production version to the Google Play Store
+        - provider: script
+          script: bundle exec fastlane deploy_play_store
+          on: 
+            branches:
+              only:
+                - travisci
+            tags: true
+            conditions: $TRAVIS_TAG =~ (?:GooglePlayStore)
 
-  # Deploy a Production version to the Google Play Store
-  - provider: script
-    script: bundle exec fastlane deploy_play_store
-    on: 
-      branches:
-        only:
-          - travisci
-      tags: true
-      conditions: $TRAVIS_TAG =~ (?:GooglePlayStore)
