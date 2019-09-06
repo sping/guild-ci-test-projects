@@ -14,4 +14,4 @@ before_script:
   - cd $TRAVIS_BUILD_DIR/iOS/GitViewer
 
 script: 
-  - bundle exec fastlane beta
+  - bundle exec fastlane deploy_staging
