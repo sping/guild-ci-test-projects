@@ -31,7 +31,7 @@ platform :ios do
       podfile: "Podfile",
       try_repo_update_on_error: true
     )
-    setup_circle_ci
+    setup_travis
   end
 
   lane :lint do
@@ -62,7 +62,8 @@ platform :ios do
   desc 'Build the iOS application and push it to Fabric'
   private_lane :beta do
     increment_build_number(xcodeproj: './GitViewer.xcodeproj')
-    match(type: 'enterprise')
+    match(type: 'enterprise',
+    clone_branch_directly)
 
     build_beta
     upload_to_fabric
