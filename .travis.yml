@@ -2,6 +2,14 @@ language: swift
 sudo: required
 osx_image: xcode10.3
 
+before_install:
+  - cd iOS/GitViewer
+  - gem update --system
+  - gem install fastlane --quiet
+  - gem install travis-conditions
+  - bundle install
+  - bundle update
+
 before_script:
   - cd $TRAVIS_BUILD_DIR/iOS/GitViewer
 
