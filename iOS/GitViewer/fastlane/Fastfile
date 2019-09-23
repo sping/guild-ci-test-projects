@@ -62,7 +62,7 @@ platform :ios do
   desc 'Build the iOS application and push it to Fabric'
   private_lane :beta do
     increment_build_number(xcodeproj: './GitViewer.xcodeproj')
-    match(type: 'enterprise', readonly: is_ci)
+    match(type: 'enterprise')
 
     build_beta
     upload_to_fabric
