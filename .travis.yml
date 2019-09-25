@@ -58,7 +58,7 @@ matrix:
                 only:
                   - travisci
                 tags: true
-                conditions: "$TRAVIS_TAG =~ (?:Fabric\/Staging)"
+                conditions: "$TRAVIS_TAG =~ (?:Android\/Fabric\/Staging)"
 
           # Deploy a Production version when Fabric/Production tag is pushed
           - provider: script
@@ -68,7 +68,7 @@ matrix:
                 only:
                   - travisci
                 tags: true
-                conditions: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
+                conditions: "$TRAVIS_TAG =~ (?:Android\/Fabric\/Production)"
                 
           # Deploy a Production version to the Google Play Store
           - provider: script
@@ -78,7 +78,7 @@ matrix:
                 only:
                   - travisci
               tags: true
-              conditions: $TRAVIS_TAG =~ (?:GooglePlayStore)
+              conditions: $TRAVIS_TAG =~ (?:Android\/GooglePlayStore)
       
         
 
@@ -112,7 +112,7 @@ matrix:
               only:
                 - travisci
               tags: true
-              conditions: "$TRAVIS_TAG =~ (?:Fabric\/Staging)"
+              conditions: "$TRAVIS_TAG =~ (?:iOS\/Fabric\/Staging)"
         
         # Deploy a Production version when Fabric/Production tag is pushed
         - provider: script
@@ -122,7 +122,7 @@ matrix:
               only:
                   - travisci
               tags: true
-              conditions: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
+              conditions: "$TRAVIS_TAG =~ (?:iOS\/Fabric\/Production)"
         
         # Deploy a Production version to the Apple App Store
         - provider: script
@@ -132,4 +132,4 @@ matrix:
                 only:
                   - travisci
               tags: true
-              conditions: $TRAVIS_TAG =~ (?:Appstore)
+              conditions: $TRAVIS_TAG =~ (?:iOS\/Appstore)
