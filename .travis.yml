@@ -3,6 +3,7 @@ sudo: required
 osx_image: xcode10.3
 
 before_install:
+  - echo -e "machine github.com\n  login $CI_GITHUB_TOKEN" >> ~/.netrc
   - cd iOS/GitViewer
   - gem update --system
   - gem install openssl
