@@ -56,7 +56,7 @@ platform :ios do
 
   lane :deploy_app_store do
     # Execute environment switching / scheme switching here
-    send_slack_notification(platform: 'iOS', type: 'beta', environment: 'App Store')
+    send_slack_notification(platform: 'iOS', type: 'Release', environment: 'App Store')
   end
 
   desc 'Build the iOS application and push it to Fabric'

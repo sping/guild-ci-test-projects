@@ -1,21 +1,53 @@
-language: swift
-sudo: required
-osx_image: xcode10.3
-
-before_install:
-  - echo -e "machine github.com\n  login $CI_GITHUB_TOKEN" >> ~/.netrc
-  - cd iOS/GitViewer
-  - gem update --system
-  - gem install openssl
-  - gem install fastlane --quiet
-  - gem install travis-conditions
-  - gem install jazzy
-  - bundle install
-  - bundle update
-
-before_script:
-  - cd $TRAVIS_BUILD_DIR/iOS/GitViewer
-
-script: 
-  - bundle exec fastlane deploy_staging
-  - jazzy
+matrix:
+  include:
+  # iOS Job
+  - language: swift
+    sudo: required
+    osx_image: xcode10.3
+    ios:
+      before_install:
+        - echo -e "machine github.com\n  login $CI_GITHUB_TOKEN" >> ~/.netrc
+        - cd iOS/GitViewer
+        - gem update --system
+        - gem install fastlane --quiet
+        - gem install travis-conditions
+        - gem install jazzy
+        - bundle install
+        - bundle update
+      
+      before_script:
+        - cd $TRAVIS_BUILD_DIR/iOS/GitViewer
+      
+      script:
+        - jazzy
+      
+      deploy:
+        # Deploy a Staging version when Fabric/Staging tag is pushed
+        - provider: script
+          script: bundle exec fastlane deploy_staging
+          on:
+            branches:
+              only:
+                - travisci
+              tags: true
+              conditions: "$TRAVIS_TAG =~ (?:Fabric\/Staging)"
+        
+        # Deploy a Production version when Fabric/Production tag is pushed
+        - provider: script
+          script: bundle exec fastlane deploy_production
+          on:
+            branches:
+              only:
+                  - travisci
+              tags: true
+              conditions: "$TRAVIS_TAG =~ (?:Fabric\/Production)"
+        
+        # Deploy a Production version to the Apple App Store
+        - provider: script
+            script: bundle exec fastlane deploy_app_store
+            on:
+              branches:
+                only:
+                  - travisci
+              tags: true
+              conditions: $TRAVIS_TAG =~ (?:Appstore)
