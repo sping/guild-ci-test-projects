@@ -12,3 +12,4 @@
 /captures
 .externalNativeBuild
 .env
+/app/fabric.properties
