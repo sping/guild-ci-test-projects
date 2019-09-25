@@ -9,6 +9,7 @@ before_install:
   - gem install openssl
   - gem install fastlane --quiet
   - gem install travis-conditions
+  - gem install jazzy
   - bundle install
   - bundle update
 
