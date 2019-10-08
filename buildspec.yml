@@ -7,7 +7,20 @@ env:
     ANDROID_SDK_TOOLS: "4333796"
 
 phases:
+  pre_build:
+    commands:
+      - cd Android/GitViewer
+      - gem update --system
+      - gem install bundler --force
+      - bundle install --path vendor/bundle
+      - chmod +x ./gradlew
   build:
     commands:
-      - chmod +x ./gradlew
-      - ./gradlew lint
+      - echo "./gradlew lint"
+      - echo "./gradlew dokka"
+      - bundle exec fastlane deploy_staging
+
+cache:
+  paths:
+    - 'vendor/bundle'
+    - '/root/.gradle/caches'
