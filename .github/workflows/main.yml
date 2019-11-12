@@ -14,7 +14,7 @@ jobs:
         APPLE_ACCOUNT:  ${{ secrets.APPLE_ACCOUNT }}
         TEAM_ID:        ${{ secrets.TEAM_ID }}
       run: |
-        ./iOS/GitViewer/fastlane setup --verbose
+        fastlane setup --verbose
 
     # Deploy a staging version to Fabric
     - name: Run Fastlane Deploy Staging
@@ -27,5 +27,5 @@ jobs:
         FABRIC_TOKEN:         ${{ secrets.FABRIC_TOKEN }}
         RELEASE_SLACK_URL:    ${{ secrets.RELEASE_SLACK_URL }}
       run: |
-        ./iOS/GitViewer/fastlane deploy_staging --verbose
+        fastlane deploy_staging --verbose
         
