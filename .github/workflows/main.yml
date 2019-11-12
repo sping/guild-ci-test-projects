@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Install and run xcodegen
-      run: 
+      run: |
         brew install xcodegen
         xcodegen generate
 
@@ -17,7 +17,7 @@ jobs:
       env:
         APPLE_ACCOUNT: ${{ secrets.APPLE_ACCOUNT }}
         TEAM_ID: ${{ secrets.TEAM_ID }}
-      run:
+      run: |
         ./iOS/GitViewer/fastlane setup --verbose
 
     # Deploy a staging version to Fabric
@@ -27,6 +27,6 @@ jobs:
         MATCH_PASSWORD:  ${{ secrets.MATCH_PASS }}
         SIGNING_ID: ${{ secrets.APPLE_ACCOUNT }}
         TEAM_ID: ${{ secrets.TEAM_ID }}
-      run:
+      run: |
         ./iOS/GitViewer/fastlane deploy_staging --verbose
         
