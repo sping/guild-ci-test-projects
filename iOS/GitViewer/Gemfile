@@ -1,4 +1,4 @@
 source "https://rubygems.org"
 
 gem "fastlane"
-# gem "cocoapods" Cocoapods is already installed in Github Actions
+gem "cocoapods"
