@@ -7,26 +7,25 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Install and run xcodegen
-      run: |
-        brew install xcodegen
-        xcodegen generate
 
     # Setup Fastlane for Github Actions use
     - name: Run Fastlane setup
       env:
-        APPLE_ACCOUNT: ${{ secrets.APPLE_ACCOUNT }}
-        TEAM_ID: ${{ secrets.TEAM_ID }}
+        APPLE_ACCOUNT:  ${{ secrets.APPLE_ACCOUNT }}
+        TEAM_ID:        ${{ secrets.TEAM_ID }}
       run: |
         ./iOS/GitViewer/fastlane setup --verbose
 
     # Deploy a staging version to Fabric
     - name: Run Fastlane Deploy Staging
       env:
-        MATCH_REPO: ${{ secrets.MATCH_REPO }}
-        MATCH_PASSWORD:  ${{ secrets.MATCH_PASS }}
-        SIGNING_ID: ${{ secrets.APPLE_ACCOUNT }}
-        TEAM_ID: ${{ secrets.TEAM_ID }}
+        MATCH_REPO:           ${{ secrets.MATCH_REPO }}
+        MATCH_PASSWORD:       ${{ secrets.MATCH_PASS }}
+        SIGNING_ID:           ${{ secrets.APPLE_ACCOUNT }}
+        TEAM_ID:              ${{ secrets.TEAM_ID }}
+        FABRIC_BUILD_SECRET:  ${{ secrets.FABRIC_BUILD_SECRET }}
+        FABRIC_TOKEN:         ${{ secrets.FABRIC_TOKEN }}
+        RELEASE_SLACK_URL:    ${{ secrets.RELEASE_SLACK_URL }}
       run: |
         ./iOS/GitViewer/fastlane deploy_staging --verbose
         
