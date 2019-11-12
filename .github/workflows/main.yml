@@ -15,7 +15,7 @@ jobs:
         TEAM_ID:        ${{ secrets.TEAM_ID }}
       working-directory: ./iOS/GitViewer
       run: |
-        fastlane setup --verbose
+        bundle exec fastlane setup --verbose
 
     # Deploy a staging version to Fabric
     - name: Run Fastlane Deploy Staging
@@ -29,5 +29,5 @@ jobs:
         RELEASE_SLACK_URL:    ${{ secrets.RELEASE_SLACK_URL }}
       working-directory: ./iOS/GitViewer
       run: |
-        fastlane deploy_staging --verbose
+        bundle exec fastlane deploy_staging --verbose
         
