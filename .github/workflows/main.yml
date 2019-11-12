@@ -13,6 +13,7 @@ jobs:
       env:
         APPLE_ACCOUNT:  ${{ secrets.APPLE_ACCOUNT }}
         TEAM_ID:        ${{ secrets.TEAM_ID }}
+      working-directory: ./iOS/GitViewer
       run: |
         fastlane setup --verbose
 
@@ -26,6 +27,7 @@ jobs:
         FABRIC_BUILD_SECRET:  ${{ secrets.FABRIC_BUILD_SECRET }}
         FABRIC_TOKEN:         ${{ secrets.FABRIC_TOKEN }}
         RELEASE_SLACK_URL:    ${{ secrets.RELEASE_SLACK_URL }}
+      working-directory: ./iOS/GitViewer
       run: |
         fastlane deploy_staging --verbose
         
