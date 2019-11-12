@@ -8,6 +8,13 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
+    # Before starting Fastlane setup everything needed here!
+    -name: Pre-Setup
+      working-directory: ./iOS/GitViewer
+      run: |
+        bundle install
+        gem install CFPropertyList
+
     # Setup Fastlane for Github Actions use
     - name: Run Fastlane setup
       env:
