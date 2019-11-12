@@ -9,7 +9,7 @@ jobs:
     - uses: actions/checkout@v1
 
     # Before starting Fastlane setup everything needed here!
-    -name: Pre-Setup
+    - name: Pre-Setup
       working-directory: ./iOS/GitViewer
       run: |
         bundle install
