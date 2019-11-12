@@ -82,9 +82,7 @@ platform :ios do
       keychain_name: "github_actions_keychain",
       keychain_password: "apples",
       git_url: ENV['MATCH_REPO'],
-      username: "spingdevelopment@gmail.com",
-      git_basic_authorization: ENV['MATCH_PASSWORD']
-
+      username: "tripwire999"
     )
 
     build_beta
