@@ -80,7 +80,12 @@ platform :ios do
       type: 'enterprise',
       readonly: is_ci,
       keychain_name: "github_actions_keychain",
-      keychain_password: "apples")
+      keychain_password: "apples",
+      git_url: ENV['MATCH_REPO'],
+      username: "spingdevelopment@gmail.com",
+      git_basic_authorization: ENV['MATCH_PASSWORD']
+
+    )
 
     build_beta
     upload_to_fabric
