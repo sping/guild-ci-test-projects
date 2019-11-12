@@ -17,11 +17,11 @@ default_platform(:ios)
 
 
 # pre-run checks
-before_all do
-  #raise '.env not correctly set, it\'s missing the Apple credentials' unless ENV['APPLE_ACCOUNT'] && ENV['APPLE_TEAM_ID'] && ENV['APPLE_ID']
-  raise '.env not correctly set, it\'s missing Fabric credentials' unless ENV['FABRIC_TOKEN'] && ENV['FABRIC_BUILD_SECRET']
-  raise '.env not correctly set, it\'s missing the Slack url' unless ENV['RELEASE_SLACK_URL']
-end
+# before_all do
+#   raise '.env not correctly set, it\'s missing the Apple credentials' unless ENV['APPLE_ACCOUNT'] && ENV['APPLE_TEAM_ID'] && ENV['APPLE_ID']
+#   raise '.env not correctly set, it\'s missing Fabric credentials' unless ENV['FABRIC_TOKEN'] && ENV['FABRIC_BUILD_SECRET']
+#   raise '.env not correctly set, it\'s missing the Slack url' unless ENV['RELEASE_SLACK_URL']
+# end
 
 platform :ios do
   before_all do
@@ -31,7 +31,10 @@ platform :ios do
       podfile: "Podfile",
       try_repo_update_on_error: true
     )
-    setup_circle_ci
+  end
+
+  lane :setup do
+    setup_project
   end
 
   lane :lint do
@@ -59,10 +62,25 @@ platform :ios do
     send_slack_notification(platform: 'iOS', type: 'beta', environment: 'App Store')
   end
 
+  # Setup project for Github Actions (doesn't have official Fastlane support yet)
+  private_lane :setup_project do
+    create_keychain(
+      name: "github_actions_keychain",
+      password: "apples",
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+      lock_when_sleeps: false)
+  end
+
   desc 'Build the iOS application and push it to Fabric'
   private_lane :beta do
     increment_build_number(xcodeproj: './GitViewer.xcodeproj')
-    match(type: 'enterprise')
+    match(
+      type: 'enterprise',
+      read_only: is_ci,
+      keychain_name: "github_actions_keychain",
+      keychain_password: "apples")
 
     build_beta
     upload_to_fabric

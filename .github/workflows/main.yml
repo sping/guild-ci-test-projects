@@ -7,9 +7,26 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+    - name: Install and run xcodegen
+      run: 
+        brew install xcodegen
+        xcodegen generate
+
+    # Setup Fastlane for Github Actions use
+    - name: Run Fastlane setup
+      env:
+        APPLE_ACCOUNT: ${{ secrets.APPLE_ACCOUNT }}
+        TEAM_ID: ${{ secrets.TEAM_ID }}
+      run:
+        ./iOS/GitViewer/fastlane setup --verbose
+
+    # Deploy a staging version to Fabric
+    - name: Run Fastlane Deploy Staging
+      env:
+        MATCH_REPO: ${{ secrets.MATCH_REPO }}
+        MATCH_PASSWORD:  ${{ secrets.MATCH_PASS }}
+        SIGNING_ID: ${{ secrets.APPLE_ACCOUNT }}
+        TEAM_ID: ${{ secrets.TEAM_ID }}
+      run:
+        ./iOS/GitViewer/fastlane deploy_staging --verbose
+        
