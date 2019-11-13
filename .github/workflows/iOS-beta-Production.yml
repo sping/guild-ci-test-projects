@@ -44,9 +44,9 @@ jobs:
       run: |
         bundle exec fastlane deploy_production --verbose
 
-      # Generate documentation
-      - name: Generate Jazzy documentation
-        working-directory: ./iOS/GitViewer
-      run: |
-        jazzy
+      # # Generate documentation
+      # - name: Generate Jazzy documentation
+      #   working-directory: ./iOS/GitViewer
+      # run: |
+      #   jazzy
         
