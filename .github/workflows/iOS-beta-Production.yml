@@ -1,4 +1,4 @@
-name: GitViewer iOS Staging Deployment
+name: GitViewer iOS Production Deployment
 
 on:
   push:
