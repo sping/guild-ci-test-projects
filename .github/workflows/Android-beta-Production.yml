@@ -5,7 +5,7 @@ on: [push]
     branches:
       - Github_Actions
     tags:
-      - 'Fabric/Staging/*'
+      - 'Fabric/Production/*'
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
         bundle install
         
     # Deploy Staging version to Fabric
-    - name: Run Fastlane Deploy Staging
+    - name: Run Fastlane Deploy Production
       env: 
         KEYSTORE_PASS:        ${{ secrets.KEYSTORE_PASS }}
         KEYSTORE_ALIAS:       ${{ secrets.KEYSTORE_ALIAS }}
@@ -29,7 +29,7 @@ jobs:
         RELEASE_SLACK_URL:    ${{ secrets.RELEASE_SLACK_URL }}
       working-directory: ./Android/GitViewer
       run: |
-        bundle exec fastlane deploy_staging --verbose
+        bundle exec fastlane deploy_production --verbose
 
     # Generate documentation
     - name: Generate documentation
