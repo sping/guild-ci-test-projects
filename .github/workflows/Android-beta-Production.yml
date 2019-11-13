@@ -1,6 +1,6 @@
 name: GitViewer Android Production Deployment
 
-on: [push]
+on:
   push:
     branches:
       - Github_Actions
