@@ -1,6 +1,11 @@
-name: GitViewer Deployment
+name: GitViewer iOS Staging Deployment
 
-on: [push]
+on:
+  push:
+    branches:
+      - Github_Actions
+    tags:
+      - 'Fabric/Staging/*'
 
 jobs:
   build:
@@ -38,4 +43,10 @@ jobs:
       working-directory: ./iOS/GitViewer
       run: |
         bundle exec fastlane deploy_staging --verbose
+
+      #Generate documentation
+      - name: Generate Jazzy documentation
+        working-directory: ./iOS/GitViewer
+      run: |
+        jazzy
         

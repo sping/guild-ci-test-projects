@@ -1,0 +1,52 @@
+name: GitViewer iOS Staging Deployment
+
+on:
+  push:
+    branches:
+      - Github_Actions
+    tags:
+      - 'Fabric/Production/*'
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    # Before starting Fastlane setup everything needed here!
+    - name: Pre-Setup
+      working-directory: ./iOS/GitViewer
+      run: |
+        bundle install
+        gem install CFPropertyList
+        gem install jazzy
+
+    # Setup Fastlane for Github Actions use
+    - name: Run Fastlane setup
+      env:
+        APPLE_ACCOUNT:  ${{ secrets.APPLE_ACCOUNT }}
+        TEAM_ID:        ${{ secrets.TEAM_ID }}
+      working-directory: ./iOS/GitViewer
+      run: |
+        bundle exec fastlane setup --verbose
+
+    # Deploy a staging version to Fabric
+    - name: Run Fastlane Deploy Staging
+      env:
+        MATCH_REPO:           ${{ secrets.MATCH_REPO }}
+        MATCH_PASSWORD:       ${{ secrets.MATCH_PASS }}
+        SIGNING_ID:           ${{ secrets.APPLE_ACCOUNT }}
+        TEAM_ID:              ${{ secrets.TEAM_ID }}
+        FABRIC_BUILD_SECRET:  ${{ secrets.FABRIC_BUILD_SECRET }}
+        FABRIC_TOKEN:         ${{ secrets.FABRIC_TOKEN }}
+        RELEASE_SLACK_URL:    ${{ secrets.RELEASE_SLACK_URL }}
+      working-directory: ./iOS/GitViewer
+      run: |
+        bundle exec fastlane deploy_production --verbose
+
+      #Generate documentation
+      - name: Generate Jazzy documentation
+        working-directory: ./iOS/GitViewer
+      run: |
+        jazzy
+        
