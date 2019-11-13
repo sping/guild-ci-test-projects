@@ -30,8 +30,8 @@ jobs:
       run: |
         bundle exec fastlane setup --verbose
 
-    # Deploy a staging version to Fabric
-    - name: Run Fastlane Deploy Staging
+    # Deploy a production version to Fabric
+    - name: Run Fastlane Deploy Production
       env:
         MATCH_REPO:           ${{ secrets.MATCH_REPO }}
         MATCH_PASSWORD:       ${{ secrets.MATCH_PASS }}
@@ -44,9 +44,9 @@ jobs:
       run: |
         bundle exec fastlane deploy_production --verbose
 
-      # # Generate documentation
-      # - name: Generate Jazzy documentation
-      #   working-directory: ./iOS/GitViewer
-      # run: |
-      #   jazzy
+      # Generate documentation
+      - name: Generate Jazzy documentation
+        working-directory: ./iOS/GitViewer
+        run: |
+          jazzy
         

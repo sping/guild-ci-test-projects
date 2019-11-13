@@ -15,14 +15,6 @@
 
 default_platform(:ios)
 
-
-# pre-run checks
-# before_all do
-#   raise '.env not correctly set, it\'s missing the Apple credentials' unless ENV['APPLE_ACCOUNT'] && ENV['APPLE_TEAM_ID'] && ENV['APPLE_ID']
-#   raise '.env not correctly set, it\'s missing Fabric credentials' unless ENV['FABRIC_TOKEN'] && ENV['FABRIC_BUILD_SECRET']
-#   raise '.env not correctly set, it\'s missing the Slack url' unless ENV['RELEASE_SLACK_URL']
-# end
-
 platform :ios do
   before_all do
     clear_derived_data

@@ -1,0 +1,33 @@
+name: GitViewer Android Staging Deployment
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v1
+    
+    # Before starting setup everything needed here!
+    - name: Pre-Setup
+      working-directory: ./Android/GitViewer
+      run: |
+        bundle install
+        
+    # Deploy Staging version to Fabric
+    - name: Run Fastlane Deploy Staging
+      env: 
+        KEYSTORE_PASS:        ${{ secrets.KEYSTORE_PASS }}
+        KEYSTORE_ALIAS:       ${{ secrets.KEYSTORE_ALIAS }}
+        FABRIC_BUILD_SECRET:  ${{ secrets.FABRIC_BUILD_SECRET }}
+        FABRIC_TOKEN:         ${{ secrets.FABRIC_TOKEN }}
+        RELEASE_SLACK_URL:    ${{ secrets.RELEASE_SLACK_URL }}
+      working-directory: ./Android/GitViewer
+      run: |
+        bundle exec fastlane deploy_staging --verbose
+
+    # Generate documentation
+    - name: Generate documentation
+      working-directory: ./Android/GitViewer
+      run: |
+        ./gradlew dokka

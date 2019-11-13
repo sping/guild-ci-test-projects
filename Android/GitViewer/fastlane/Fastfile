@@ -14,11 +14,11 @@
 # update_fastlane
 
 # Pre-run checks
-before_all do
-  raise '.env not correctly set, it\'s missing the Android keystore stuff' unless ENV['KEYSTORE_PASS'] && ENV['KEYSTORE_ALIAS']
-  raise '.env not correctly set, it\'s missing Fabric credentials' unless ENV['FABRIC_TOKEN'] && ENV['FABRIC_BUILD_SECRET']
-  raise '.env not correctly set, it\'s missing the Slack url' unless ENV['RELEASE_SLACK_URL']
-end
+# before_all do
+#   raise '.env not correctly set, it\'s missing the Android keystore stuff' unless ENV['KEYSTORE_PASS'] && ENV['KEYSTORE_ALIAS']
+#   raise '.env not correctly set, it\'s missing Fabric credentials' unless ENV['FABRIC_TOKEN'] && ENV['FABRIC_BUILD_SECRET']
+#   raise '.env not correctly set, it\'s missing the Slack url' unless ENV['RELEASE_SLACK_URL']
+# end
 
 default_platform(:android)
 
