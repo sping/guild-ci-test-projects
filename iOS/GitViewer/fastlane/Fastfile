@@ -81,8 +81,7 @@ platform :ios do
       readonly: is_ci,
       keychain_name: "github_actions_keychain",
       keychain_password: "apples",
-      git_url: ENV['MATCH_REPO'],
-      username: "tripwire999"
+      git_url: ENV['MATCH_REPO']
     )
 
     build_beta
