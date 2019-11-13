@@ -1,4 +1,4 @@
-name: GitViewer Android Staging Deployment
+name: GitViewer Android Production Deployment
 
 on: [push]
   push:
