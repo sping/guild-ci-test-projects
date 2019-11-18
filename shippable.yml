@@ -7,8 +7,11 @@ env:
   global:
     - ANDROID_HOME=/opt/android-sdk
     - ANDROID_SDK=/opt/android-sdk/tools/bin
+    - secure: JUdrwNRaLOM9QreMxDUx30nEzQx6lJvq2NGw/iaXBYyt9Fe+9kKkCNeLBHpZezPC3JpAU9qFaVLkwBg1MUFeXTaYDQ4RmoIQLq3g38nq/Br3yTxodb4KBQMAYSP6y6DHY7g9uz/F0sEwrDjX/0gxFMibYbE8WwbPycPnQoyzZFGV4KgSONNoxpXvHhSeBNvHvggXk0AoCRh8nEVj6rK+mYTxa2x3cp5mkwLNLz7r7b+/H8Z+/mAhWHKN8Utyt0ZGLqzNiBKu1VeeQnK6alvN5nMehzKqzxo418Dkgfv2RQ0ZwG+pOBfVdR02+Rgn4Q1tnQy9dBVxi0X6IXbu9m5gUAzQCnJnPnRXa8jdF3WosRW8YwWKdA1GKyDb7YSs0D4PknhrVSE1J7wvvtl0ub5JE+Zp2AugXAqVF9dKRSVtigx+RiOhVVhBkEtObj1nvKDr2o2yX87HVs9yQecewyn7xErRjDAKN9KI/e/mhlRKpLaJxkrzIEQ+UVkhA7MPyMB3JKx8cueeGyw2qJs4zFXKiiRLaTBorJi672T2G8EO6twdbuRG0cqELiPgehi1217My7xC5ClS27rh+BM4By0Kdu5XiYNSiQJqxopBdnrKUF6k8yTABJLD2yK3EFeZuiYt+76hneh6LkDy4/FzPu9CSkXhc+EZNJo1gmA69IYZMA8=
 
-build:
+build:  
+  always:
+    - cd Android/GitViewer
   ci:
     # Disable gradle daemon for CI
     # https://docs.gradle.org/current/userguide/gradle_daemon.html#when_should_i_not_use_the_gradle_daemon
@@ -16,6 +19,11 @@ build:
     - echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties
     - echo "org.gradle.configureondemand=false" >> ~/.gradle/gradle.properties
     - echo "org.gradle.parallel=false" >> ~/.gradle/gradle.properties
+
+    # Install Fastlane
+    - bundle install
+    - gem install fastlane
+    - gem install jazzy
+
     - java -version
-    - cd Android/GitViewer
-    - gradle assembleDebug
+    - bundle exec fastlane deploy_staging --verbose
