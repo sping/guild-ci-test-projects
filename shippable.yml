@@ -17,4 +17,5 @@ build:
     - echo "org.gradle.configureondemand=false" >> ~/.gradle/gradle.properties
     - echo "org.gradle.parallel=false" >> ~/.gradle/gradle.properties
     - java -version
-    - ./Android/GitViewer/gradle assembleDebug
+    - cd Android/GitViewer
+    - gradle assembleDebug
