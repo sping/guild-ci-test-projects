@@ -68,7 +68,7 @@ jobs:
           paths:
             - ~/guild-ci-test-projects
       - run:
-          command: sh entrypoint.sh bundle exec rspec
+          command: bash entrypoint.sh bundle exec rspec
       - store_artifacts:
           path: ~/guild-ci-test-projects/rails/tmp/screenshots
           destination: screenshots
