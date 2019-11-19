@@ -58,6 +58,7 @@ jobs:
         environment:
           SELENIUM_DRIVER_URL: http://localhost:4444/wd/hub
           DATABASE_HOST: localhost
+          RAILS_ENV: test
       - image: circleci/postgres
       - image: selenium/standalone-chrome:3.5.3
     working_directory: ~/guild-ci-test-projects/rails
@@ -72,9 +73,11 @@ jobs:
           paths:
             - /usr/local/bundle
       - run:
-          command: bash entrypoint.sh bundle exec rails db:migrate RAILS_ENV=test
+          command: bundle exec db:create
       - run:
-          command: bash entrypoint.sh bundle exec rspec
+          command: bundle exec rails db:migrate
+      - run:
+          command: bundle exec rspec
       - store_artifacts:
           path: ~/guild-ci-test-projects/rails/tmp/screenshots
           destination: screenshots
