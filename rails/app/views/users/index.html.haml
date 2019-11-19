@@ -1,0 +1,10 @@
+%h1 Users
+%table
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.name
+        %td= l(user.created_at)
+        %td= link_to "View", user_path(user)
+
+= link_to "Create", new_user_path
