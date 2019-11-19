@@ -74,7 +74,7 @@ jobs:
           paths:
             - "{{ .Environment.BUNDLE_PATH }}"
       - run:
-          command: bundle exec db:create
+          command: bundle exec rails db:create
       - run:
           command: bundle exec rails db:migrate
       - run:
