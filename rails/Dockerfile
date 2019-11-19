@@ -1,13 +1,14 @@
-FROM ruby:2.5
+FROM ruby:2.5.5
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
-RUN mkdir /myapp
-WORKDIR /myapp
-COPY Gemfile /myapp/Gemfile
-COPY Gemfile.lock /myapp/Gemfile.lock
+RUN mkdir /usr/src/app
+WORKDIR /usr/src/app
+COPY Gemfile /usr/src/app/Gemfile
+COPY Gemfile.lock /usr/src/app/Gemfile.lock
 RUN bundle install
-COPY . /myapp
+COPY . /usr/src/app
 
 # Add a script to be executed every time the container starts.
+ENV RAILS_ROOT=/usr/src/app
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
