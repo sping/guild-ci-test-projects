@@ -66,7 +66,8 @@ jobs:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/guild-ci-test-projects
-      - command: entrypoint.sh bundle exec rspec
+      - run:
+          command: entrypoint.sh bundle exec rspec
 
 workflows:
   build:
