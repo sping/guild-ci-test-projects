@@ -61,13 +61,14 @@ jobs:
       - image: selenium/standalone-chrome:3.5.3
     working_directory: ~/guild-ci-test-projects/rails
     steps:
-      - checkout
+      - checkout:
+          path: ~/guild-ci-test-projects
       - save_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/guild-ci-test-projects
       - run:
-          command: entrypoint.sh bundle exec rspec
+          command: sh entrypoint.sh bundle exec rspec
 
 workflows:
   build:
