@@ -57,6 +57,7 @@ jobs:
       - image: circleci/ruby:2.5.5-node
         environment:
           SELENIUM_DRIVER_URL: http://localhost:4444/wd/hub
+          DATABASE_HOST: localhost
       - image: circleci/postgres
       - image: selenium/standalone-chrome:3.5.3
     working_directory: ~/guild-ci-test-projects/rails
