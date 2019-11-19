@@ -54,7 +54,7 @@ jobs:
 
   rails_test:
     docker:
-      - image: circleci/ruby:2.5.5
+      - image: circleci/ruby:2.5.5-node
         environment:
           SELENIUM_DRIVER_URL: http://localhost:4444/wd/hub
       - image: circleci/postgres
