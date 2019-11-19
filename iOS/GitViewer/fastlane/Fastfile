@@ -15,6 +15,7 @@
 
 default_platform(:ios)
 
+
 # pre-run checks
 before_all do
   raise '.env not correctly set, it\'s missing the Apple credentials' unless ENV['APPLE_ACCOUNT'] && ENV['APPLE_TEAM_ID'] && ENV['APPLE_ID']
@@ -27,27 +28,37 @@ platform :ios do
     clear_derived_data
     cocoapods(
       clean: true,
-      podfile: "./Podfile"
+      podfile: "Podfile",
+      try_repo_update_on_error: true
     )
   end
 
-  private_lane :build_beta do
-    gym(
-      scheme: 'GitViewer',
-      export_method: 'enterprise',
-      workspace: './GitViewer.xcworkspace'
+  lane :lint do
+    swiftlint(
+      reporter: "html",
+      output_file: "fastlane/swiftlint.html"
     )
   end
 
-  private_lane :buid_release do
-    gym(
-      scheme: 'GitViewer',
-      workspace: './GitViewer.xcworkspace'
-    )
+  lane :deploy_staging do
+    # Execute environment switching / scheme switching here
+    beta
+    send_slack_notification(platform: 'iOS', type: 'beta', environment: 'Staging')
   end
 
+  lane :deploy_production do
+    # Execute environment switching / scheme switching here
+    beta
+    send_slack_notification(platform: 'iOS', type: 'beta', environment: 'Production')
+  end
+
+  lane :deploy_app_store do
+    # Execute environment switching / scheme switching here
+    send_slack_notification(platform: 'iOS', type: 'beta', environment: 'App Store')
+  end
+  
   desc 'Build the iOS application and push it to Fabric'
-  lane :beta do
+  private_lane :beta do
     increment_build_number(xcodeproj: './GitViewer.xcodeproj')
     get_certificates(
       output_path: './fastlane/certificates'
@@ -59,7 +70,24 @@ platform :ios do
 
     build_beta
     upload_to_fabric
-    send_slack_notification(platform: 'iOS', type: 'beta')
+    
+  end
+
+  # Build the release version of the app and upload it to the App Store
+  private_lane :buid_release do
+    gym(
+      scheme: 'GitViewer',
+      workspace: './GitViewer.xcworkspace'
+    )
+  end
+
+  # Build the beta app with enterprise export method
+  private_lane :build_beta do
+    gym(
+      scheme: 'GitViewer',
+      export_method: 'enterprise',
+      workspace: './GitViewer.xcworkspace'
+    )
   end
 
   # Upload beta to Fabric
@@ -75,7 +103,7 @@ platform :ios do
     slack(
       slack_url: ENV['RELEASE_SLACK_URL'],
       channel: "#ci_cd_guild",
-      message: "#{args[:platform]} #{args[:type]} app released to Fabric",
+      message: "#{args[:platform]} #{args[:type]} app released to Fabric with #{args[:environment]} environment",
       payload: {
         'Build Date' => Time.new.to_s,
         'Built by' => 'Fastlane'

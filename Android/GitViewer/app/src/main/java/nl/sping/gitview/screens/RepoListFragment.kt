@@ -1,4 +1,4 @@
-package nl.sping.gitview.repos
+package nl.sping.gitview.screens
 
 
 import android.os.Bundle
@@ -11,7 +11,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_repo_list.*
 import nl.sping.gitview.R
-import nl.sping.gitview.model.GithubRepo
+import nl.sping.gitview.data.Git
+import nl.sping.gitview.adapters.RepoListAdapter
+import nl.sping.gitview.viewmodels.ReposListViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -49,7 +51,7 @@ class RepoListFragment : Fragment() {
 
     }
 
-    fun renderRepos(reposList: List<GithubRepo>) {
+    fun renderRepos(reposList: List<Git>) {
         repoListAdapter.update(reposList)
     }
 

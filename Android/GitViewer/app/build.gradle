@@ -14,6 +14,7 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "nl.sping.gitview"
         minSdkVersion 22

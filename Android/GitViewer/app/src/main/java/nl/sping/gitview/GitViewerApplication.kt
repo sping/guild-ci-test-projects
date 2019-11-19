@@ -4,7 +4,7 @@ import android.app.Application
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
 import io.fabric.sdk.android.Fabric
-import nl.sping.gitview.persistence.TokenWarehouse
+import nl.sping.gitview.data.TokenWarehouse
 
 /**
  * Created by sebastiaan on 2019-05-15
