@@ -72,7 +72,7 @@ jobs:
       - save_cache:
           key: v2-rails-bundle-{{ checksum "Gemfile.lock" }}
           paths:
-            - "{{ .Environment.BUNDLE_PATH }}"
+            - "~/bundle"
       - run:
           command: bundle exec rails db:create
       - run:
