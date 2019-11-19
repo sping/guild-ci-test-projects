@@ -52,6 +52,22 @@ jobs:
       - run:
           command: bundle exec fastlane << parameters.command >>
 
+  rails_test:
+    docker:
+      - image: circleci/ruby:2.5.5
+        environment:
+          SELENIUM_DRIVER_URL: http://localhost:4444/wd/hub
+      - image: circleci/postgres
+      - image: selenium/standalone-chrome:3.5.3
+    working_directory: ~/guild-ci-test-projects/rails
+    steps:
+      - checkout
+      - save_cache:
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/guild-ci-test-projects
+      - command: entrypoint.sh bundle exec rspec
+
 workflows:
   build:
     jobs:
@@ -104,3 +120,7 @@ workflows:
           filters:
             branches:
               only: /Appstore/.*$/
+
+  rails_test:
+    jobs:
+      - rails_test
