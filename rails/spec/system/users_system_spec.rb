@@ -21,4 +21,18 @@ RSpec.describe "Users management", :type => :system do
 
     expect(page).to have_text("User Cool me")
   end
+
+  it "updates the title on the edit page, but fails because my test is wrong", js: true do
+    user = create :user, name: "Me"
+
+    visit "/users/#{User.first.id}/edit"
+
+    assert_selector "h1", text: "Edit Me"
+    fill_in "Name", :with => "Cooler me"
+    assert_selector "h1", text: "Edit Cool me"
+
+    click_button "Submit"
+
+    expect(page).to have_text("User Cool me")
+  end
 end
