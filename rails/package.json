@@ -1,5 +1,10 @@
 {
   "name": "myapp",
   "private": true,
+  "scripts": {
+    "start": "docker-compose up web",
+    "rails": "docker-compose run --rm web bundle exec rails",
+    "bundle": "docker-compose run --rm web bundle"
+  },
   "dependencies": {}
 }
