@@ -116,8 +116,8 @@ blocks:
       env_vars:
         - name: RAILS_ENV
           value: "test"
-        - name: SELENIUM_DRIVER_URL
-          value: "http://localhost:4444/wd/hub"
+        # - name: SELENIUM_DRIVER_URL
+        #   value: "http://localhost:4444/wd/hub"
         - name: DATABASE_HOST
           value: "0.0.0.0"
       jobs:
