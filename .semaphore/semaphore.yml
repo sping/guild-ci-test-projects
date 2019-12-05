@@ -93,3 +93,41 @@ blocks:
           commands:
             - ./gradlew dokka
 
+  - name: 'Setup rails application'
+    skip:
+      when: "branch != 'feature/semaphoreci'"
+    dependencies: []
+    task:
+      jobs:
+        - name: bundle
+        commands:
+          - checkout
+          - cd rails
+          - cache restore
+          - bundle install --path vendor/bundle
+          - cache store
+
+  - name: 'Rspec'
+    skip:
+      when: "branch != 'feature/semaphoreci'"
+    dependencies: []
+    task:
+      env_vars:
+        - name: RAILS_ENV
+          value: "test"
+        - name: SELENIUM_DRIVER_URL
+          value: "http://CHROME_IMAGE_HOST:4444/wd/hub"
+        - name: DATABASE_HOST
+          value: "0.0.0.0"
+      jobs:
+        - name: rspec
+        commands:
+          - checkout
+          - cache restore
+          - sem-service start postgres
+          - sem-version ruby 2.6.0
+          - bundle install
+          - bundle exec rails db:create && bundle exec rails db:migrate
+          - bundle exec rspec
+
+
