@@ -4,9 +4,9 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
-  containers:
-    - name: main
-      image: iisue/alpine-android-fastlane
+  # containers:
+  #   - name: main
+  #     image: iisue/alpine-android-fastlane
 
 blocks:
   # - name: "Test on iOS"
