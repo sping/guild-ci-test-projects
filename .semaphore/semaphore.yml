@@ -9,35 +9,35 @@ agent:
       image: iisue/alpine-android-fastlane
 
 blocks:
-  - name: "Test on iOS"
-    skip:
-      when: "branch != 'feature/semaphoreci'"
-    dependencies: []
-    task:
-      agent:
-        machine:
-          type: a1-standard-4
-          os_image: macos-mojave
-      secrets:
-        - name: ios-secrets
-      env_vars:
-        - name: LANG
-          value: en_US.UTF-8
-        - name: RELEASE_SLACK_URL
-          value: https://hooks.slack.com/services/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
-      prologue:
-        commands:
-          - checkout
-          - cd iOS/GitViewer
-          - cache restore bundle-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),bundle-ios-$SEMAPHORE_GIT_BRANCH-,bundle-ios-master-
-          - bundle install --path vendor/bundle
-          - cache store bundle-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
-      jobs:
-        - name: "Tests"
-          commands:
-            - cache restore pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock)
-            - bundle exec fastlane lint
-            - cache store pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock) Pods
+  # - name: "Test on iOS"
+  #   skip:
+  #     when: "branch != 'feature/semaphoreci'"
+  #   dependencies: []
+  #   task:
+  #     agent:
+  #       machine:
+  #         type: a1-standard-4
+  #         os_image: macos-mojave
+  #     secrets:
+  #       - name: ios-secrets
+  #     env_vars:
+  #       - name: LANG
+  #         value: en_US.UTF-8
+  #       - name: RELEASE_SLACK_URL
+  #         value: https://hooks.slack.com/services/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
+  #     prologue:
+  #       commands:
+  #         - checkout
+  #         - cd iOS/GitViewer
+  #         - cache restore bundle-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),bundle-ios-$SEMAPHORE_GIT_BRANCH-,bundle-ios-master-
+  #         - bundle install --path vendor/bundle
+  #         - cache store bundle-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
+  #     jobs:
+  #       - name: "Tests"
+  #         commands:
+  #           - cache restore pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock)
+  #           - bundle exec fastlane lint
+  #           - cache store pods-ios-$SEMAPHORE_GIT_BRANCH-$(checksum Podfile.lock) Pods
 
   # - name: "Build for iOS"
   #   dependencies: ["Test on iOS"]
@@ -61,37 +61,37 @@ blocks:
   #         commands:
   #           - echo 'fastlane deploy_xxx'
 
-  - name: "Test on Android"
-    skip:
-      when: "branch != 'feature/semaphoreci'"
-    dependencies: []
-    task:
-      secrets:
-        - name: ios-secrets
-      env_vars:
-        - name: ANDROID_COMPILE_SDK
-          value: "28"
-        - name: ANDROID_BUILD_TOOLS
-          value: "28.0.3"
-        - name: ANDROID_SDK_TOOLS
-          value: "4333796"
-      prologue:
-        commands:
-          - apk add --no-cache lftp coreutils
-          - checkout
-          - cd Android/GitViewer
-          - cache restore bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),bundle-android-$SEMAPHORE_GIT_BRANCH-,bundle-android-master-
-          - gem update --system
-          - gem install bundler --force
-          - bundle install --path vendor/bundle
-          - cache store bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
-      jobs:
-        - name: "Lint"
-          commands:
-            - ./gradlew lint
-        - name: "Dokka documentation"
-          commands:
-            - ./gradlew dokka
+  # - name: "Test on Android"
+  #   skip:
+  #     when: "branch != 'feature/semaphoreci'"
+  #   dependencies: []
+  #   task:
+  #     secrets:
+  #       - name: ios-secrets
+  #     env_vars:
+  #       - name: ANDROID_COMPILE_SDK
+  #         value: "28"
+  #       - name: ANDROID_BUILD_TOOLS
+  #         value: "28.0.3"
+  #       - name: ANDROID_SDK_TOOLS
+  #         value: "4333796"
+  #     prologue:
+  #       commands:
+  #         - apk add --no-cache lftp coreutils
+  #         - checkout
+  #         - cd Android/GitViewer
+  #         - cache restore bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock),bundle-android-$SEMAPHORE_GIT_BRANCH-,bundle-android-master-
+  #         - gem update --system
+  #         - gem install bundler --force
+  #         - bundle install --path vendor/bundle
+  #         - cache store bundle-android-$SEMAPHORE_GIT_BRANCH-$(checksum Gemfile.lock) vendor/bundle
+  #     jobs:
+  #       - name: "Lint"
+  #         commands:
+  #           - ./gradlew lint
+  #       - name: "Dokka documentation"
+  #         commands:
+  #           - ./gradlew dokka
 
   - name: 'Setup rails application'
     skip:
@@ -104,6 +104,7 @@ blocks:
             - checkout
             - cd rails
             - cache restore
+            - sem-version ruby 2.5.5
             - bundle install --path vendor/bundle
             - cache store
 
@@ -126,7 +127,7 @@ blocks:
             - cd rails
             - cache restore
             - sem-service start postgres
-            - sem-version ruby 2.6.0
+            - sem-version ruby 2.5.5
             - bundle install
             - bundle exec rails db:create && bundle exec rails db:migrate
             - bundle exec rspec
