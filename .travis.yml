@@ -151,7 +151,7 @@ matrix:
 
     before_install:
       - docker pull selenium/standalone-chrome:3.5.3
-      - docker run -d -p 4444:4444 --shm-size=2g selenium/standalone-chrome:3.5.3-xenon
+      - docker run -d -p 4444:4444 --shm-size=2g selenium/standalone-chrome:3.5.3
       - cd rails
       - bundle check || bundle install
 
