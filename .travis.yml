@@ -147,7 +147,10 @@ matrix:
       - postgresql
 
     env:
-    
+      SELENIUM_DRIVER_URL: http://localhost:4444/wd/hub
+      DATABASE_HOST: localhost
+      RAILS_ENV: test
+      BUNDLE_PATH: ~/bundle
 
     before_install:
       - docker pull selenium/standalone-chrome:3.5.3
