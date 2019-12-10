@@ -144,16 +144,16 @@ matrix:
   
     services:
       - docker
+      - postgresql
 
     env:
     
 
     before_install:
-      - docker pull circleci/ruby:2.5.5-node
-      - docker pull circleci/postgres
       - docker pull selenium/standalone-chrome:3.5.3
-      - bundle check || bundle install
+      - docker run -d -p 4444:4444 --shm-size=2g selenium/standalone-chrome:3.5.3-xenon
       - cd rails
+      - bundle check || bundle install
 
     script:
       - bundle exec rails db:create
