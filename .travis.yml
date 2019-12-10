@@ -136,6 +136,9 @@ matrix:
   
   # Rails job
   - language: ruby
+    rvm:
+      - 2.5.5
+
     install: true
     sudo: required
   
@@ -149,9 +152,13 @@ matrix:
       - docker pull circleci/ruby:2.5.5-node
       - docker pull circleci/postgres
       - docker pull selenium/standalone-chrome:3.5.3
-      - cd  rails
+      - bundle check || bundle install
+      - cd rails
 
     script:
+      - bundle exec rails db:create
+      - bundle exec rails db:migrate
+      - bundle exec rspec
       
     
     
