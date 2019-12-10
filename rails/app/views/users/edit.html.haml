@@ -1,0 +1,8 @@
+%h1= "Edit #{@user.name}"
+
+= render 'form'
+
+:javascript
+  document.querySelector('[name="user[name]"]').addEventListener('input', (e) => {
+    document.querySelector('h1').innerText = `Edit ${e.target.value}`
+  })

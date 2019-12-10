@@ -114,6 +114,37 @@ jobs:
       - run:
           command: bundle exec fastlane << parameters.command >>
 
+  rails_test:
+    docker:
+      - image: circleci/ruby:2.5.5-node
+        environment:
+          SELENIUM_DRIVER_URL: http://localhost:4444/wd/hub
+          DATABASE_HOST: localhost
+          RAILS_ENV: test
+          BUNDLE_PATH: ~/bundle
+      - image: circleci/postgres
+      - image: selenium/standalone-chrome:3.5.3
+    working_directory: ~/guild-ci-test-projects/rails
+    steps:
+      - checkout:
+          path: ~/guild-ci-test-projects
+      - restore_cache:
+          key: v2-rails-bundle-{{ checksum "Gemfile.lock" }}
+      - run: bundle check || bundle install
+      - save_cache:
+          key: v2-rails-bundle-{{ checksum "Gemfile.lock" }}
+          paths:
+            - "~/bundle"
+      - run:
+          command: bundle exec rails db:create
+      - run:
+          command: bundle exec rails db:migrate
+      - run:
+          command: bundle exec rspec
+      - store_artifacts:
+          path: ~/guild-ci-test-projects/rails/tmp/screenshots
+          destination: screenshots
+
 workflows:
   build:
     jobs:
@@ -222,3 +253,7 @@ workflows:
               ignore: /.*/
             tags:
               only: /^GooglePlayStore/.*$/
+
+  rails_test:
+    jobs:
+      - rails_test
