@@ -151,10 +151,10 @@ matrix:
       - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
       - chmod +x docker-compose
       - sudo mv docker-compose /usr/local/bin
-      - docker-compose run --user='root' --entrypoint chown worker_test -R myuser:myuser
       - cd  rails
 
     script:
+      - docker-compose run --user='root' --entrypoint chown worker_test -R myuser:myuser
       - docker-compose run web rake db:create
       - docker-compose up --build web
     
